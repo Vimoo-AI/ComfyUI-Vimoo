@@ -1,0 +1,1723 @@
+{
+  "last_node_id": 50,
+  "last_link_id": 5,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "VimooModelLoader",
+      "pos": [
+        0,
+        80
+      ],
+      "size": [
+        370,
+        140
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            1
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VimooModelLoader"
+      },
+      "widgets_values": [
+        "vimoo_v1_i2v_bf16.safetensors",
+        "bf16"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "VimooPerformanceOptions",
+      "pos": [
+        0,
+        290
+      ],
+      "size": [
+        370,
+        150
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 1
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            2,
+            4
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VimooPerformanceOptions"
+      },
+      "widgets_values": [
+        "pytorch",
+        false
+      ]
+    },
+    {
+      "id": 3,
+      "type": "VimooImageLoader",
+      "pos": [
+        0,
+        490
+      ],
+      "size": [
+        370,
+        330
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 2
+        }
+      ],
+      "outputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "links": [
+            5
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VimooImageLoader"
+      },
+      "widgets_values": [
+        "vimoo_v1_i2v.png"
+      ]
+    },
+    {
+      "id": 50,
+      "type": "7f346eea-114c-5307-977f-9de4e8dad85d",
+      "title": "Vimoo-1.0 I2V",
+      "pos": [
+        450,
+        80
+      ],
+      "size": [
+        490,
+        610
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "label": "model",
+          "type": "MODEL",
+          "link": 4
+        },
+        {
+          "name": "image",
+          "label": "image",
+          "type": "IMAGE",
+          "link": 5
+        },
+        {
+          "name": "prompt",
+          "label": "prompt",
+          "type": "STRING",
+          "link": null,
+          "widget": {
+            "name": "prompt"
+          }
+        },
+        {
+          "name": "resolution",
+          "label": "resolution",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "resolution"
+          }
+        },
+        {
+          "name": "width",
+          "label": "width",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "width"
+          }
+        },
+        {
+          "name": "height",
+          "label": "height",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "height"
+          }
+        },
+        {
+          "name": "length",
+          "label": "length",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "length"
+          }
+        },
+        {
+          "name": "steps",
+          "label": "steps",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "steps"
+          }
+        },
+        {
+          "name": "cfg",
+          "label": "Text CFG",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "cfg"
+          }
+        },
+        {
+          "name": "seed",
+          "label": "seed",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "seed"
+          }
+        },
+        {
+          "name": "fps",
+          "label": "fps",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "fps"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "video",
+          "type": "VIDEO",
+          "links": [
+            3
+          ]
+        }
+      ],
+      "properties": {
+        "vimoo_generation": true
+      },
+      "widgets_values": [
+        "Continuing exactly from the reference frame: the barn owl perches on the central weathered barn beam, white heart-shaped face, golden-speckled wings folded, lit by low morning light through plank gaps on the right. Within the first half-second it raises both wings and snaps them fully open into a wide, symmetrical display, then beats them in two powerful downstrokes while its talons keep gripping the beam, body staying centered above it. Spread primaries reveal pale undersides and fine dark barring; wingtips remain inside the central square. Dust swirls off the beam in the wing draft and spins through the light. The camera arcs smoothly left around the owl at constant distance, a blurred foreground post sliding across the frame edge and background beams shifting behind. Crisp feather detail, natural wildlife realism, one continuous shot.",
+        "auto",
+        1280,
+        720,
+        121,
+        50,
+        3.0,
+        1234,
+        24.0
+      ],
+      "widgets_values_named": {
+        "prompt": "Continuing exactly from the reference frame: the barn owl perches on the central weathered barn beam, white heart-shaped face, golden-speckled wings folded, lit by low morning light through plank gaps on the right. Within the first half-second it raises both wings and snaps them fully open into a wide, symmetrical display, then beats them in two powerful downstrokes while its talons keep gripping the beam, body staying centered above it. Spread primaries reveal pale undersides and fine dark barring; wingtips remain inside the central square. Dust swirls off the beam in the wing draft and spins through the light. The camera arcs smoothly left around the owl at constant distance, a blurred foreground post sliding across the frame edge and background beams shifting behind. Crisp feather detail, natural wildlife realism, one continuous shot.",
+        "resolution": "auto",
+        "width": 1280,
+        "height": 720,
+        "length": 121,
+        "steps": 50,
+        "cfg": 3.0,
+        "seed": 1234,
+        "fps": 24.0
+      }
+    },
+    {
+      "id": 4,
+      "type": "SaveVideo",
+      "pos": [
+        1020,
+        80
+      ],
+      "size": [
+        370,
+        200
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "video",
+          "type": "VIDEO",
+          "link": 3
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "SaveVideo"
+      },
+      "widgets_values": [
+        "vimoo_v1_i2v",
+        "mp4",
+        "h264",
+        "auto",
+        "auto"
+      ]
+    }
+  ],
+  "links": [
+    [
+      1,
+      1,
+      0,
+      2,
+      0,
+      "MODEL"
+    ],
+    [
+      2,
+      2,
+      0,
+      3,
+      0,
+      "MODEL"
+    ],
+    [
+      3,
+      50,
+      0,
+      4,
+      0,
+      "VIDEO"
+    ],
+    [
+      4,
+      2,
+      0,
+      50,
+      0,
+      "MODEL"
+    ],
+    [
+      5,
+      3,
+      0,
+      50,
+      1,
+      "IMAGE"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {},
+  "version": 0.4,
+  "revision": 0,
+  "definitions": {
+    "subgraphs": [
+      {
+        "id": "7f346eea-114c-5307-977f-9de4e8dad85d",
+        "version": 1,
+        "revision": 0,
+        "config": {},
+        "name": "Vimoo-1.0 I2V",
+        "state": {
+          "lastGroupId": 0,
+          "lastNodeId": 14,
+          "lastLinkId": 45,
+          "lastRerouteId": 0
+        },
+        "inputNode": {
+          "id": -10,
+          "bounding": [
+            -320,
+            40,
+            210,
+            420
+          ]
+        },
+        "outputNode": {
+          "id": -20,
+          "bounding": [
+            1450,
+            40,
+            170,
+            120
+          ]
+        },
+        "inputs": [
+          {
+            "id": "9935cc50-9d13-50c3-90ba-4dc8ea9b933d",
+            "name": "model",
+            "label": "model",
+            "type": "MODEL",
+            "linkIds": [
+              1,
+              8,
+              11,
+              21,
+              33,
+              34
+            ],
+            "pos": [
+              -100,
+              80
+            ]
+          },
+          {
+            "id": "7a0abc44-975f-5d61-ba44-d35e65f13d17",
+            "name": "image",
+            "label": "image",
+            "type": "IMAGE",
+            "linkIds": [
+              23,
+              43
+            ],
+            "pos": [
+              -100,
+              104
+            ]
+          },
+          {
+            "id": "c251f4e3-b99e-5c00-9d34-8d0518e94ef4",
+            "name": "prompt",
+            "label": "prompt",
+            "type": "STRING",
+            "linkIds": [
+              3
+            ],
+            "pos": [
+              -100,
+              128
+            ]
+          },
+          {
+            "id": "d17c747e-db19-5837-8c02-01899f2b945c",
+            "name": "resolution",
+            "label": "resolution",
+            "type": "COMBO",
+            "linkIds": [
+              39
+            ],
+            "pos": [
+              -100,
+              152
+            ]
+          },
+          {
+            "id": "821f74ee-7a4a-51cf-9f27-00f2cb80c304",
+            "name": "width",
+            "label": "width",
+            "type": "INT",
+            "linkIds": [
+              40
+            ],
+            "pos": [
+              -100,
+              176
+            ]
+          },
+          {
+            "id": "cc83416b-1e2b-5df2-bebf-a424b26cb386",
+            "name": "height",
+            "label": "height",
+            "type": "INT",
+            "linkIds": [
+              41
+            ],
+            "pos": [
+              -100,
+              200
+            ]
+          },
+          {
+            "id": "5508b7cc-0911-55dc-aaf8-b71965e43566",
+            "name": "length",
+            "label": "length",
+            "type": "INT",
+            "linkIds": [
+              15
+            ],
+            "pos": [
+              -100,
+              224
+            ]
+          },
+          {
+            "id": "9e1a1901-7489-573a-bdb2-73ff6d299603",
+            "name": "steps",
+            "label": "steps",
+            "type": "INT",
+            "linkIds": [
+              9
+            ],
+            "pos": [
+              -100,
+              248
+            ]
+          },
+          {
+            "id": "5c871fe3-b496-5467-ba6d-6131a48da4a4",
+            "name": "cfg",
+            "label": "Text CFG",
+            "type": "FLOAT",
+            "linkIds": [
+              10
+            ],
+            "pos": [
+              -100,
+              272
+            ]
+          },
+          {
+            "id": "80e73b85-360c-5596-b18e-2a21c3d227af",
+            "name": "seed",
+            "label": "seed",
+            "type": "INT",
+            "linkIds": [
+              26
+            ],
+            "pos": [
+              -100,
+              296
+            ]
+          },
+          {
+            "id": "1b325a77-4765-59f2-a213-d3c16ea8fb73",
+            "name": "fps",
+            "label": "fps",
+            "type": "FLOAT",
+            "linkIds": [
+              44
+            ],
+            "pos": [
+              -100,
+              320
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "id": "24d94cb1-fc7b-5bbe-85e1-3cb31d05d481",
+            "name": "video",
+            "type": "VIDEO",
+            "linkIds": [
+              45
+            ],
+            "pos": [
+              1450,
+              80
+            ]
+          }
+        ],
+        "widgets": [],
+        "nodes": [
+          {
+            "id": 1,
+            "type": "VimooTextEncoderLoader",
+            "pos": [
+              0,
+              0
+            ],
+            "size": [
+              370,
+              330
+            ],
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "model",
+                "type": "MODEL",
+                "link": 1
+              },
+              {
+                "name": "full_task",
+                "type": "STRING",
+                "link": 2
+              }
+            ],
+            "outputs": [
+              {
+                "name": "CLIP",
+                "type": "CLIP",
+                "links": [
+                  5,
+                  7
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "VimooTextEncoderLoader"
+            },
+            "widgets_values": [
+              "vimoo_v1_qwen2_5_vl_7b_bf16.safetensors",
+              "vimoo_v1_glyph_byt5_fp32.safetensors",
+              "precise",
+              "bf16_transposed_ffn"
+            ]
+          },
+          {
+            "id": 2,
+            "type": "VimooTextEncode",
+            "pos": [
+              440,
+              0
+            ],
+            "size": [
+              370,
+              330
+            ],
+            "flags": {},
+            "order": 1,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "text",
+                "type": "STRING",
+                "link": 3,
+                "widget": {
+                  "name": "text"
+                }
+              },
+              {
+                "name": "max_sequence_length",
+                "type": "INT",
+                "link": 4,
+                "widget": {
+                  "name": "max_sequence_length"
+                }
+              },
+              {
+                "name": "clip",
+                "type": "CLIP",
+                "link": 5
+              }
+            ],
+            "outputs": [
+              {
+                "name": "CONDITIONING",
+                "type": "CONDITIONING",
+                "links": [
+                  17
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "VimooTextEncode"
+            },
+            "widgets_values": [
+              "Continuing exactly from the reference frame: the barn owl perches on the central weathered barn beam, white heart-shaped face, golden-speckled wings folded, lit by low morning light through plank gaps on the right. Within the first half-second it raises both wings and snaps them fully open into a wide, symmetrical display, then beats them in two powerful downstrokes while its talons keep gripping the beam, body staying centered above it. Spread primaries reveal pale undersides and fine dark barring; wingtips remain inside the central square. Dust swirls off the beam in the wing draft and spins through the light. The camera arcs smoothly left around the owl at constant distance, a blurred foreground post sliding across the frame edge and background beams shifting behind. Crisp feather detail, natural wildlife realism, one continuous shot.",
+              true,
+              1000
+            ]
+          },
+          {
+            "id": 3,
+            "type": "VimooTextEncode",
+            "pos": [
+              880,
+              0
+            ],
+            "size": [
+              370,
+              330
+            ],
+            "flags": {},
+            "order": 2,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "max_sequence_length",
+                "type": "INT",
+                "link": 6,
+                "widget": {
+                  "name": "max_sequence_length"
+                }
+              },
+              {
+                "name": "clip",
+                "type": "CLIP",
+                "link": 7
+              }
+            ],
+            "outputs": [
+              {
+                "name": "CONDITIONING",
+                "type": "CONDITIONING",
+                "links": [
+                  18
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "VimooTextEncode"
+            },
+            "widgets_values": [
+              "static, blurry details, subtitles, style, painting, still image, grayish overall tone, worst quality, low quality, JPEG artifacts, ugly, mutilated, extra fingers, poorly drawn hands, poorly drawn face, deformed, disfigured, malformed limbs, fused fingers, motionless scene, cluttered background, three legs, many people in the background, walking backwards",
+              false,
+              1000
+            ]
+          },
+          {
+            "id": 4,
+            "type": "VimooReferenceVAELoader",
+            "pos": [
+              0,
+              470
+            ],
+            "size": [
+              370,
+              330
+            ],
+            "flags": {},
+            "order": 3,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "model",
+                "type": "MODEL",
+                "link": 8
+              }
+            ],
+            "outputs": [
+              {
+                "name": "VAE",
+                "type": "VAE",
+                "links": [
+                  19
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "VimooReferenceVAELoader"
+            },
+            "widgets_values": [
+              "vimoo_v1_wan22_ti2v_vae_fp32.safetensors"
+            ]
+          },
+          {
+            "id": 5,
+            "type": "CLIPVisionLoader",
+            "pos": [
+              440,
+              470
+            ],
+            "size": [
+              370,
+              330
+            ],
+            "flags": {},
+            "order": 4,
+            "mode": 0,
+            "inputs": [],
+            "outputs": [
+              {
+                "name": "CLIP_VISION",
+                "type": "CLIP_VISION",
+                "links": [
+                  20
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "CLIPVisionLoader"
+            },
+            "widgets_values": [
+              "vimoo_v1_siglip_so400m_fp16.safetensors"
+            ]
+          },
+          {
+            "id": 6,
+            "type": "VimooTI2VSchedule",
+            "pos": [
+              880,
+              470
+            ],
+            "size": [
+              370,
+              330
+            ],
+            "flags": {},
+            "order": 5,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "steps",
+                "type": "INT",
+                "link": 9,
+                "widget": {
+                  "name": "steps"
+                }
+              },
+              {
+                "name": "i2v_cfg",
+                "type": "FLOAT",
+                "link": 10,
+                "widget": {
+                  "name": "i2v_cfg"
+                }
+              },
+              {
+                "name": "model",
+                "type": "MODEL",
+                "link": 11
+              },
+              {
+                "name": "task",
+                "type": "STRING",
+                "link": 12
+              }
+            ],
+            "outputs": [
+              {
+                "name": "sigmas",
+                "type": "SIGMAS",
+                "links": [
+                  32
+                ]
+              },
+              {
+                "name": "cfg",
+                "type": "FLOAT",
+                "links": [
+                  24
+                ]
+              },
+              {
+                "name": "guidance_rescale",
+                "type": "FLOAT",
+                "links": [
+                  25
+                ]
+              },
+              {
+                "name": "first_frame_replace",
+                "type": "BOOLEAN",
+                "links": [
+                  16
+                ]
+              },
+              {
+                "name": "sampler_name",
+                "type": "COMBO",
+                "links": [
+                  27
+                ]
+              },
+              {
+                "name": "max_sequence_length",
+                "type": "INT",
+                "links": [
+                  4,
+                  6
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "VimooTI2VSchedule"
+            },
+            "widgets_values": [
+              50,
+              12.0,
+              4.5,
+              3.0,
+              1.2,
+              0.5,
+              true,
+              "full",
+              6.0
+            ]
+          },
+          {
+            "id": 7,
+            "type": "VimooTI2VConditioning",
+            "pos": [
+              0,
+              940
+            ],
+            "size": [
+              370,
+              330
+            ],
+            "flags": {},
+            "order": 6,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "width",
+                "type": "INT",
+                "link": 13,
+                "widget": {
+                  "name": "width"
+                }
+              },
+              {
+                "name": "height",
+                "type": "INT",
+                "link": 14,
+                "widget": {
+                  "name": "height"
+                }
+              },
+              {
+                "name": "length",
+                "type": "INT",
+                "link": 15,
+                "widget": {
+                  "name": "length"
+                }
+              },
+              {
+                "name": "first_frame_replace",
+                "type": "BOOLEAN",
+                "link": 16,
+                "widget": {
+                  "name": "first_frame_replace"
+                }
+              },
+              {
+                "name": "positive",
+                "type": "CONDITIONING",
+                "link": 17
+              },
+              {
+                "name": "negative",
+                "type": "CONDITIONING",
+                "link": 18
+              },
+              {
+                "name": "vae",
+                "type": "VAE",
+                "link": 19
+              },
+              {
+                "name": "clip_vision",
+                "type": "CLIP_VISION",
+                "link": 20
+              },
+              {
+                "name": "model",
+                "type": "MODEL",
+                "link": 21
+              },
+              {
+                "name": "task",
+                "type": "STRING",
+                "link": 22
+              },
+              {
+                "name": "image",
+                "type": "IMAGE",
+                "link": 23
+              }
+            ],
+            "outputs": [
+              {
+                "name": "positive",
+                "type": "CONDITIONING",
+                "links": [
+                  29
+                ]
+              },
+              {
+                "name": "negative",
+                "type": "CONDITIONING",
+                "links": [
+                  30
+                ]
+              },
+              {
+                "name": "latent",
+                "type": "LATENT",
+                "links": [
+                  31
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "VimooTI2VConditioning"
+            },
+            "widgets_values": [
+              1280,
+              720,
+              121,
+              false,
+              "precise"
+            ]
+          },
+          {
+            "id": 8,
+            "type": "VimooSampler",
+            "pos": [
+              440,
+              940
+            ],
+            "size": [
+              370,
+              330
+            ],
+            "flags": {},
+            "order": 7,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "cfg",
+                "type": "FLOAT",
+                "link": 24,
+                "widget": {
+                  "name": "cfg"
+                }
+              },
+              {
+                "name": "guidance_rescale",
+                "type": "FLOAT",
+                "link": 25,
+                "widget": {
+                  "name": "guidance_rescale"
+                }
+              },
+              {
+                "name": "seed",
+                "type": "INT",
+                "link": 26,
+                "widget": {
+                  "name": "seed"
+                }
+              },
+              {
+                "name": "sampler_name",
+                "type": "COMBO",
+                "link": 27,
+                "widget": {
+                  "name": "sampler_name"
+                }
+              },
+              {
+                "name": "fps",
+                "type": "FLOAT",
+                "link": 28,
+                "widget": {
+                  "name": "fps"
+                }
+              },
+              {
+                "name": "positive",
+                "type": "CONDITIONING",
+                "link": 29
+              },
+              {
+                "name": "negative",
+                "type": "CONDITIONING",
+                "link": 30
+              },
+              {
+                "name": "latent_image",
+                "type": "LATENT",
+                "link": 31
+              },
+              {
+                "name": "sigmas",
+                "type": "SIGMAS",
+                "link": 32
+              },
+              {
+                "name": "model",
+                "type": "MODEL",
+                "link": 33
+              }
+            ],
+            "outputs": [
+              {
+                "name": "LATENT",
+                "type": "LATENT",
+                "links": [
+                  35
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "VimooSampler"
+            },
+            "widgets_values": [
+              3.0,
+              0.5,
+              1234,
+              "fixed",
+              "vimoo_uni_pc",
+              1,
+              1001237,
+              24,
+              true,
+              3.0,
+              0.001
+            ]
+          },
+          {
+            "id": 9,
+            "type": "VimooVAELoader",
+            "pos": [
+              880,
+              940
+            ],
+            "size": [
+              370,
+              330
+            ],
+            "flags": {},
+            "order": 8,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "model",
+                "type": "MODEL",
+                "link": 34
+              }
+            ],
+            "outputs": [
+              {
+                "name": "VAE",
+                "type": "VAE",
+                "links": [
+                  36
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "VimooVAELoader"
+            },
+            "widgets_values": [
+              "vimoo_v1_wan22_ti2v_vae_fp32.safetensors",
+              true
+            ]
+          },
+          {
+            "id": 10,
+            "type": "VAEDecode",
+            "pos": [
+              0,
+              1410
+            ],
+            "size": [
+              370,
+              330
+            ],
+            "flags": {},
+            "order": 9,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "samples",
+                "type": "LATENT",
+                "link": 35
+              },
+              {
+                "name": "vae",
+                "type": "VAE",
+                "link": 36
+              }
+            ],
+            "outputs": [
+              {
+                "name": "IMAGE",
+                "type": "IMAGE",
+                "links": [
+                  38
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "VAEDecode"
+            },
+            "widgets_values": []
+          },
+          {
+            "id": 11,
+            "type": "CreateVideo",
+            "pos": [
+              440,
+              1410
+            ],
+            "size": [
+              370,
+              330
+            ],
+            "flags": {},
+            "order": 10,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "fps",
+                "type": "FLOAT",
+                "link": 37,
+                "widget": {
+                  "name": "fps"
+                }
+              },
+              {
+                "name": "images",
+                "type": "IMAGE",
+                "link": 38
+              }
+            ],
+            "outputs": [
+              {
+                "name": "VIDEO",
+                "type": "VIDEO",
+                "links": [
+                  45
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "CreateVideo"
+            },
+            "widgets_values": [
+              24,
+              "auto",
+              "sRGB"
+            ]
+          },
+          {
+            "id": 12,
+            "type": "VimooResolution",
+            "pos": [
+              880,
+              1410
+            ],
+            "size": [
+              370,
+              330
+            ],
+            "flags": {},
+            "order": 11,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "resolution",
+                "type": "COMBO",
+                "link": 39,
+                "widget": {
+                  "name": "resolution"
+                }
+              },
+              {
+                "name": "width",
+                "type": "INT",
+                "link": 40,
+                "widget": {
+                  "name": "width"
+                }
+              },
+              {
+                "name": "height",
+                "type": "INT",
+                "link": 41,
+                "widget": {
+                  "name": "height"
+                }
+              },
+              {
+                "name": "task",
+                "type": "STRING",
+                "link": 42
+              },
+              {
+                "name": "image",
+                "type": "IMAGE",
+                "link": 43
+              }
+            ],
+            "outputs": [
+              {
+                "name": "width",
+                "type": "INT",
+                "links": [
+                  13
+                ]
+              },
+              {
+                "name": "height",
+                "type": "INT",
+                "links": [
+                  14
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "VimooResolution"
+            },
+            "widgets_values": [
+              "auto",
+              1280,
+              720
+            ]
+          },
+          {
+            "id": 13,
+            "type": "PrimitiveString",
+            "pos": [
+              0,
+              1880
+            ],
+            "size": [
+              370,
+              330
+            ],
+            "flags": {},
+            "order": 12,
+            "mode": 0,
+            "inputs": [],
+            "outputs": [
+              {
+                "name": "STRING",
+                "type": "STRING",
+                "links": [
+                  2,
+                  12,
+                  22,
+                  42
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "PrimitiveString"
+            },
+            "widgets_values": [
+              "i2v"
+            ]
+          },
+          {
+            "id": 14,
+            "type": "PrimitiveFloat",
+            "pos": [
+              440,
+              1880
+            ],
+            "size": [
+              370,
+              330
+            ],
+            "flags": {},
+            "order": 13,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "value",
+                "type": "FLOAT",
+                "link": 44,
+                "widget": {
+                  "name": "value"
+                }
+              }
+            ],
+            "outputs": [
+              {
+                "name": "FLOAT",
+                "type": "FLOAT",
+                "links": [
+                  28,
+                  37
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "PrimitiveFloat"
+            },
+            "widgets_values": [
+              24.0
+            ]
+          }
+        ],
+        "links": [
+          {
+            "id": 1,
+            "origin_id": -10,
+            "origin_slot": 0,
+            "target_id": 1,
+            "target_slot": 0,
+            "type": "MODEL"
+          },
+          {
+            "id": 2,
+            "origin_id": 13,
+            "origin_slot": 0,
+            "target_id": 1,
+            "target_slot": 1,
+            "type": "STRING"
+          },
+          {
+            "id": 3,
+            "origin_id": -10,
+            "origin_slot": 2,
+            "target_id": 2,
+            "target_slot": 0,
+            "type": "STRING"
+          },
+          {
+            "id": 4,
+            "origin_id": 6,
+            "origin_slot": 5,
+            "target_id": 2,
+            "target_slot": 1,
+            "type": "INT"
+          },
+          {
+            "id": 5,
+            "origin_id": 1,
+            "origin_slot": 0,
+            "target_id": 2,
+            "target_slot": 2,
+            "type": "CLIP"
+          },
+          {
+            "id": 6,
+            "origin_id": 6,
+            "origin_slot": 5,
+            "target_id": 3,
+            "target_slot": 0,
+            "type": "INT"
+          },
+          {
+            "id": 7,
+            "origin_id": 1,
+            "origin_slot": 0,
+            "target_id": 3,
+            "target_slot": 1,
+            "type": "CLIP"
+          },
+          {
+            "id": 8,
+            "origin_id": -10,
+            "origin_slot": 0,
+            "target_id": 4,
+            "target_slot": 0,
+            "type": "MODEL"
+          },
+          {
+            "id": 9,
+            "origin_id": -10,
+            "origin_slot": 7,
+            "target_id": 6,
+            "target_slot": 0,
+            "type": "INT"
+          },
+          {
+            "id": 10,
+            "origin_id": -10,
+            "origin_slot": 8,
+            "target_id": 6,
+            "target_slot": 1,
+            "type": "FLOAT"
+          },
+          {
+            "id": 11,
+            "origin_id": -10,
+            "origin_slot": 0,
+            "target_id": 6,
+            "target_slot": 2,
+            "type": "MODEL"
+          },
+          {
+            "id": 12,
+            "origin_id": 13,
+            "origin_slot": 0,
+            "target_id": 6,
+            "target_slot": 3,
+            "type": "STRING"
+          },
+          {
+            "id": 13,
+            "origin_id": 12,
+            "origin_slot": 0,
+            "target_id": 7,
+            "target_slot": 0,
+            "type": "INT"
+          },
+          {
+            "id": 14,
+            "origin_id": 12,
+            "origin_slot": 1,
+            "target_id": 7,
+            "target_slot": 1,
+            "type": "INT"
+          },
+          {
+            "id": 15,
+            "origin_id": -10,
+            "origin_slot": 6,
+            "target_id": 7,
+            "target_slot": 2,
+            "type": "INT"
+          },
+          {
+            "id": 16,
+            "origin_id": 6,
+            "origin_slot": 3,
+            "target_id": 7,
+            "target_slot": 3,
+            "type": "BOOLEAN"
+          },
+          {
+            "id": 17,
+            "origin_id": 2,
+            "origin_slot": 0,
+            "target_id": 7,
+            "target_slot": 4,
+            "type": "CONDITIONING"
+          },
+          {
+            "id": 18,
+            "origin_id": 3,
+            "origin_slot": 0,
+            "target_id": 7,
+            "target_slot": 5,
+            "type": "CONDITIONING"
+          },
+          {
+            "id": 19,
+            "origin_id": 4,
+            "origin_slot": 0,
+            "target_id": 7,
+            "target_slot": 6,
+            "type": "VAE"
+          },
+          {
+            "id": 20,
+            "origin_id": 5,
+            "origin_slot": 0,
+            "target_id": 7,
+            "target_slot": 7,
+            "type": "CLIP_VISION"
+          },
+          {
+            "id": 21,
+            "origin_id": -10,
+            "origin_slot": 0,
+            "target_id": 7,
+            "target_slot": 8,
+            "type": "MODEL"
+          },
+          {
+            "id": 22,
+            "origin_id": 13,
+            "origin_slot": 0,
+            "target_id": 7,
+            "target_slot": 9,
+            "type": "STRING"
+          },
+          {
+            "id": 23,
+            "origin_id": -10,
+            "origin_slot": 1,
+            "target_id": 7,
+            "target_slot": 10,
+            "type": "IMAGE"
+          },
+          {
+            "id": 24,
+            "origin_id": 6,
+            "origin_slot": 1,
+            "target_id": 8,
+            "target_slot": 0,
+            "type": "FLOAT"
+          },
+          {
+            "id": 25,
+            "origin_id": 6,
+            "origin_slot": 2,
+            "target_id": 8,
+            "target_slot": 1,
+            "type": "FLOAT"
+          },
+          {
+            "id": 26,
+            "origin_id": -10,
+            "origin_slot": 9,
+            "target_id": 8,
+            "target_slot": 2,
+            "type": "INT"
+          },
+          {
+            "id": 27,
+            "origin_id": 6,
+            "origin_slot": 4,
+            "target_id": 8,
+            "target_slot": 3,
+            "type": "COMBO"
+          },
+          {
+            "id": 28,
+            "origin_id": 14,
+            "origin_slot": 0,
+            "target_id": 8,
+            "target_slot": 4,
+            "type": "FLOAT"
+          },
+          {
+            "id": 29,
+            "origin_id": 7,
+            "origin_slot": 0,
+            "target_id": 8,
+            "target_slot": 5,
+            "type": "CONDITIONING"
+          },
+          {
+            "id": 30,
+            "origin_id": 7,
+            "origin_slot": 1,
+            "target_id": 8,
+            "target_slot": 6,
+            "type": "CONDITIONING"
+          },
+          {
+            "id": 31,
+            "origin_id": 7,
+            "origin_slot": 2,
+            "target_id": 8,
+            "target_slot": 7,
+            "type": "LATENT"
+          },
+          {
+            "id": 32,
+            "origin_id": 6,
+            "origin_slot": 0,
+            "target_id": 8,
+            "target_slot": 8,
+            "type": "SIGMAS"
+          },
+          {
+            "id": 33,
+            "origin_id": -10,
+            "origin_slot": 0,
+            "target_id": 8,
+            "target_slot": 9,
+            "type": "MODEL"
+          },
+          {
+            "id": 34,
+            "origin_id": -10,
+            "origin_slot": 0,
+            "target_id": 9,
+            "target_slot": 0,
+            "type": "MODEL"
+          },
+          {
+            "id": 35,
+            "origin_id": 8,
+            "origin_slot": 0,
+            "target_id": 10,
+            "target_slot": 0,
+            "type": "LATENT"
+          },
+          {
+            "id": 36,
+            "origin_id": 9,
+            "origin_slot": 0,
+            "target_id": 10,
+            "target_slot": 1,
+            "type": "VAE"
+          },
+          {
+            "id": 37,
+            "origin_id": 14,
+            "origin_slot": 0,
+            "target_id": 11,
+            "target_slot": 0,
+            "type": "FLOAT"
+          },
+          {
+            "id": 38,
+            "origin_id": 10,
+            "origin_slot": 0,
+            "target_id": 11,
+            "target_slot": 1,
+            "type": "IMAGE"
+          },
+          {
+            "id": 39,
+            "origin_id": -10,
+            "origin_slot": 3,
+            "target_id": 12,
+            "target_slot": 0,
+            "type": "COMBO"
+          },
+          {
+            "id": 40,
+            "origin_id": -10,
+            "origin_slot": 4,
+            "target_id": 12,
+            "target_slot": 1,
+            "type": "INT"
+          },
+          {
+            "id": 41,
+            "origin_id": -10,
+            "origin_slot": 5,
+            "target_id": 12,
+            "target_slot": 2,
+            "type": "INT"
+          },
+          {
+            "id": 42,
+            "origin_id": 13,
+            "origin_slot": 0,
+            "target_id": 12,
+            "target_slot": 3,
+            "type": "STRING"
+          },
+          {
+            "id": 43,
+            "origin_id": -10,
+            "origin_slot": 1,
+            "target_id": 12,
+            "target_slot": 4,
+            "type": "IMAGE"
+          },
+          {
+            "id": 44,
+            "origin_id": -10,
+            "origin_slot": 10,
+            "target_id": 14,
+            "target_slot": 0,
+            "type": "FLOAT"
+          },
+          {
+            "id": 45,
+            "origin_id": 11,
+            "origin_slot": 0,
+            "target_id": -20,
+            "target_slot": 0,
+            "type": "VIDEO"
+          }
+        ],
+        "groups": [],
+        "extra": {}
+      }
+    ]
+  }
+}

@@ -1,0 +1,115 @@
+{
+  "moduleName": "ComfyUI-Vimoo",
+  "title": "Vimoo",
+  "type": "video",
+  "templates": [
+    {
+      "name": "vimoo_v1_t2v",
+      "title": "Vimoo-1.0 T2V",
+      "description": "A large swell breaks against the rocks beneath a lighthouse as the camera moves forward and gently arcs right. White spray rises beside the steady tower, then falls as foaming runoff.",
+      "mediaType": "image",
+      "mediaSubtype": "webp",
+      "models": [
+        "Vimoo"
+      ],
+      "tags": [
+        "Text to Video",
+        "Video"
+      ],
+      "openSource": true,
+      "prompt": "A single continuous five-second cinematic shot, photorealistic. An isolated, weathered white lighthouse stands upright on dark wet coastal rocks at the centre of the frame, its warm amber lantern glowing against a stormy slate-blue sea and overcast sky. From the first frame, a large swell is already rolling in just left of centre; its slate-blue face rises, the crest curls over and slams into the rocks at the lighthouse base, bursting into a broad white plume of spray that rises beside the tower and drifts in the wind, then collapses into foaming runoff streaming back down the rock faces. The camera advances smoothly toward the lighthouse with a gentle arc to the right, revealing clear parallax between foreground rocks, the breaking wave and the steady tower. The lighthouse stays rigid, vertical and unchanged, with tower and wave held together at the heart of the composition. Physically plausible water, mist, moody natural light. No people, no text, no logos.",
+      "referenceImage": null
+    },
+    {
+      "name": "vimoo_v1_i2v",
+      "title": "Vimoo-1.0 I2V",
+      "description": "A barn owl spreads its wings and beats them twice while gripping a weathered beam. Dust swirls in the morning light as the camera arcs left around the owl.",
+      "mediaType": "image",
+      "mediaSubtype": "webp",
+      "models": [
+        "Vimoo"
+      ],
+      "tags": [
+        "Image to Video",
+        "Video"
+      ],
+      "openSource": true,
+      "prompt": "Continuing exactly from the reference frame: the barn owl perches on the central weathered barn beam, white heart-shaped face, golden-speckled wings folded, lit by low morning light through plank gaps on the right. Within the first half-second it raises both wings and snaps them fully open into a wide, symmetrical display, then beats them in two powerful downstrokes while its talons keep gripping the beam, body staying centered above it. Spread primaries reveal pale undersides and fine dark barring; wingtips remain inside the central square. Dust swirls off the beam in the wing draft and spins through the light. The camera arcs smoothly left around the owl at constant distance, a blurred foreground post sliding across the frame edge and background beams shifting behind. Crisp feather detail, natural wildlife realism, one continuous shot.",
+      "referenceImage": "vimoo_v1_i2v.png"
+    },
+    {
+      "name": "vimoo_v1_ti2v_lite",
+      "title": "Vimoo-1.0-Lite TI2V",
+      "description": "The camera climbs a blue stairway in Chefchaouen toward an arched door. A white curtain billows in the wind as red petals tumble down the steps.",
+      "mediaType": "image",
+      "mediaSubtype": "webp",
+      "models": [
+        "Vimoo"
+      ],
+      "tags": [
+        "Text to Video",
+        "Video"
+      ],
+      "openSource": true,
+      "prompt": "One continuous five-second shot up a narrow stepped alley in the old medina of Chefchaouen, Morocco. Hand-plastered walls in layered indigo, cobalt and pale sky blue show chalky texture and small chips; worn stone steps climb to a central arched deep-blue wooden door beneath a small iron lantern, with terracotta pots of red geraniums on both sides. From the first frame the camera climbs the stairs in a fast, steady rising glide, near pots and wall corners sweeping past the frame edges with strong parallax as the door grows from distant to filling the center. A gust whips the white cotton curtain beside the door high and outward in a billowing arc, loose red petals tumbling down the steps. Warm sun rakes the upper wall, cool shade below. No people, no readable text, crisp stable architecture.",
+      "referenceImage": null
+    },
+    {
+      "name": "vimoo_v1_t2v_distilled",
+      "title": "Vimoo-1.0 T2V Distilled",
+      "description": "A mechanical watch movement on dark slate, with a swinging balance wheel and ticking escapement. The camera orbits right and moves closer to the balance wheel.",
+      "mediaType": "image",
+      "mediaSubtype": "webp",
+      "models": [
+        "Vimoo"
+      ],
+      "tags": [
+        "Text to Video",
+        "Video"
+      ],
+      "openSource": true,
+      "prompt": "Macro shot of an exposed mechanical watch movement on matte dark slate: rhodium-plated bridges with fine parallel striping, polished bevels, deep red jewels, heat-blued screws, and a golden balance wheel with a fine hairspring at the exact center. The balance wheel swings vigorously through wide arcs from the first frame, the hairspring visibly breathing, while the escape wheel beside it advances in crisp, rapid ticks. The camera makes one bold, smooth move: a sweeping orbit to the right combined with a push-in, travelling from the full circular movement to a close view of the balance wheel, always centered. Bright specular highlights race across the striped bridges and bevels as angles change, and foreground bridge edges slide past the lens in parallax. Controlled upper-left key light, cool rim light, refined neutral color. No logos, numbers or markings, one continuous shot.",
+      "referenceImage": null
+    },
+    {
+      "name": "vimoo_v1_i2v_distilled",
+      "title": "Vimoo-1.0 I2V Distilled",
+      "description": "A passenger in a vintage sleeper train turns from the window toward the camera and smiles. Golden fields pass outside as sunlight sweeps across her face.",
+      "mediaType": "image",
+      "mediaSubtype": "webp",
+      "models": [
+        "Vimoo"
+      ],
+      "tags": [
+        "Image to Video",
+        "Video"
+      ],
+      "openSource": true,
+      "prompt": "Continuing exactly from the reference frame: the same woman with warm brown skin, a dark curly updo and an oat chunky knit sweater sits in the vintage sleeper train window seat, eyes open, gazing left toward the window. Right away she turns her head and shoulders decisively from the window to face the lens in one smooth motion, meeting the camera with a warm, confident smile, loose curls swinging with the turn. Through the window, golden fields, trees and fence lines streak past fast in clear horizontal motion blur, and broad bands of golden sunlight sweep across her face, sweater and the wood paneling. The camera pushes in smoothly from medium to medium-close, keeping her face centered and her hands below frame. Same compartment, no other people. Natural skin texture, soft film grain, one continuous shot.",
+      "referenceImage": "vimoo_v1_i2v_distilled.png"
+    },
+    {
+      "name": "vimoo_v1_ti2v_lite_distilled",
+      "title": "Vimoo-1.0-Lite TI2V Distilled",
+      "description": "Steam rises from a freshly baked sourdough loaf as the camera descends, arcs around it and moves closer. Defaults to T2V; switch Vimoo TI2V Input to I2V to use the supplied bread reference image.",
+      "mediaType": "image",
+      "mediaSubtype": "webp",
+      "models": [
+        "Vimoo"
+      ],
+      "tags": [
+        "Text to Video",
+        "Image to Video",
+        "Video"
+      ],
+      "openSource": true,
+      "prompt": "One continuous five-second food shot: a freshly baked round sourdough loaf on crumpled natural linen atop a dark walnut table. The crust is deep caramel and mahogany, blistered and crackled, with one bold score opening into a crisp raised ear and a fine flour dusting. From the first frame thick ribbons of steam surge from the score, curling and rising high against the dark background, backlit by morning window light from the right. The camera descends in a smooth, low crane move and arcs about thirty degrees around the loaf while pushing in, linen folds sliding past the foreground with strong parallax, so the loaf grows from a full view to a close crust-and-steam composition, always centered. The loaf shape stays solid and unchanged. Rich natural color, crisp texture, editorial food photography realism.",
+      "referenceImage": "vimoo_v1_ti2v_lite_distilled.png",
+      "defaultTask": "t2v",
+      "tasks": [
+        "t2v",
+        "i2v"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+# Target: thu-ml/SageAttention d1a57a546c3d395b1ffcbeecc66d81db76f3b4b5.
+# This patch does not target the v2.2.0 release; see docs/performance.md.
+diff --git a/setup.py b/setup.py
+index 6b2c5b4..7e2dc27 100644
+--- a/setup.py
++++ b/setup.py
+@@ -45,7 +45,7 @@ if not SKIP_CUDA_BUILD:
+     HAS_SM121 = False
+ 
+     # Supported NVIDIA GPU architectures.
+-    SUPPORTED_ARCHS = {"8.0", "8.6", "8.9", "9.0", "10.0", "12.0", "12.1"}
++    SUPPORTED_ARCHS = {"8.0", "8.6", "8.9", "9.0", "10.0", "10.3", "12.0", "12.1"}
+ 
+     # Compiler flags.
+     CXX_FLAGS = ["-g", "-O3", "-fopenmp", "-lgomp", "-std=c++17", "-DENABLE_BF16"]
+@@ -156,6 +156,12 @@ if not SKIP_CUDA_BUILD:
+         elif capability.startswith("10.0"):
+             HAS_SM100 = True
+             num = "100a"
++        elif capability.startswith("10.3"):
++            # B300/Blackwell Ultra.  The Sage2 CUDA kernels selected below use
++            # the same generic SM80/SM89 source paths, compiled natively for
++            # the detected SM103 target.
++            HAS_SM100 = True
++            num = "103a"
+         elif capability.startswith("12.0"):
+             HAS_SM120 = True
+             num = "120a"

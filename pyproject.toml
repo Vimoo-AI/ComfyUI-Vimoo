@@ -1,0 +1,20 @@
+[project]
+name = "comfyui-vimoo"
+version = "0.2.0"
+description = "Native Vimoo V1 T2V and I2V nodes for ComfyUI"
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.10"
+dependencies = ["transformers>=4.51,<5", "safetensors>=0.4.5", "sentencepiece>=0.2"]
+
+[project.urls]
+Repository = "https://github.com/Vimoo-AI/ComfyUI-Vimoo"
+
+[tool.comfy]
+requires-comfyui = ">=0.34.0"
+
+[tool.ruff]
+line-length = 110
+
+[tool.ruff.lint]
+select = ["F", "E9"]

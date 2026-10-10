@@ -1,0 +1,2 @@
+# Optional upstream CuTe implementation, tested separately from FA2/FA3 Hub kernels.
+flash-attn-4==4.0.0b30

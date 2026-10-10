@@ -1,0 +1,4 @@
+# Optional FA2/FA3 Hub loader compatible with transformers 4.x / Hub 0.x.
+# kernels 0.16+ requires Hub >=1.10, conflicting with this ComfyUI baseline.
+kernels==0.12.0
+huggingface-hub>=0.26,<1.0

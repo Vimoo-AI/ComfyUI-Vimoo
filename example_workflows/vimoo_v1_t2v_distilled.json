@@ -1,0 +1,1149 @@
+{
+  "last_node_id": 50,
+  "last_link_id": 4,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "VimooModelLoader",
+      "pos": [
+        0,
+        80
+      ],
+      "size": [
+        370,
+        140
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            1
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VimooModelLoader"
+      },
+      "widgets_values": [
+        "vimoo_v1_t2v_distilled_bf16.safetensors",
+        "bf16"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "VimooPerformanceOptions",
+      "pos": [
+        0,
+        290
+      ],
+      "size": [
+        370,
+        150
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 1
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            4
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VimooPerformanceOptions"
+      },
+      "widgets_values": [
+        "pytorch",
+        false
+      ]
+    },
+    {
+      "id": 50,
+      "type": "e43c888f-8a51-50e5-8872-3b20d77323fb",
+      "title": "Vimoo-1.0 T2V Distilled",
+      "pos": [
+        450,
+        80
+      ],
+      "size": [
+        490,
+        610
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "label": "model",
+          "type": "MODEL",
+          "link": 4
+        },
+        {
+          "name": "prompt",
+          "label": "prompt",
+          "type": "STRING",
+          "link": null,
+          "widget": {
+            "name": "prompt"
+          }
+        },
+        {
+          "name": "resolution",
+          "label": "resolution",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "resolution"
+          }
+        },
+        {
+          "name": "width",
+          "label": "width",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "width"
+          }
+        },
+        {
+          "name": "height",
+          "label": "height",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "height"
+          }
+        },
+        {
+          "name": "length",
+          "label": "length",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "length"
+          }
+        },
+        {
+          "name": "seed",
+          "label": "seed",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "seed"
+          }
+        },
+        {
+          "name": "fps",
+          "label": "fps",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "fps"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "links": [
+            3
+          ]
+        },
+        {
+          "name": "fps",
+          "type": "FLOAT",
+          "links": [
+            2
+          ]
+        }
+      ],
+      "properties": {
+        "vimoo_generation": true
+      },
+      "widgets_values": [
+        "Macro shot of an exposed mechanical watch movement on matte dark slate: rhodium-plated bridges with fine parallel striping, polished bevels, deep red jewels, heat-blued screws, and a golden balance wheel with a fine hairspring at the exact center. The balance wheel swings vigorously through wide arcs from the first frame, the hairspring visibly breathing, while the escape wheel beside it advances in crisp, rapid ticks. The camera makes one bold, smooth move: a sweeping orbit to the right combined with a push-in, travelling from the full circular movement to a close view of the balance wheel, always centered. Bright specular highlights race across the striped bridges and bevels as angles change, and foreground bridge edges slide past the lens in parallax. Controlled upper-left key light, cool rim light, refined neutral color. No logos, numbers or markings, one continuous shot.",
+        "manual",
+        1280,
+        720,
+        121,
+        1234,
+        24.0
+      ],
+      "widgets_values_named": {
+        "prompt": "Macro shot of an exposed mechanical watch movement on matte dark slate: rhodium-plated bridges with fine parallel striping, polished bevels, deep red jewels, heat-blued screws, and a golden balance wheel with a fine hairspring at the exact center. The balance wheel swings vigorously through wide arcs from the first frame, the hairspring visibly breathing, while the escape wheel beside it advances in crisp, rapid ticks. The camera makes one bold, smooth move: a sweeping orbit to the right combined with a push-in, travelling from the full circular movement to a close view of the balance wheel, always centered. Bright specular highlights race across the striped bridges and bevels as angles change, and foreground bridge edges slide past the lens in parallax. Controlled upper-left key light, cool rim light, refined neutral color. No logos, numbers or markings, one continuous shot.",
+        "resolution": "manual",
+        "width": 1280,
+        "height": 720,
+        "length": 121,
+        "seed": 1234,
+        "fps": 24.0
+      }
+    },
+    {
+      "id": 3,
+      "type": "VimooSaveVideo",
+      "pos": [
+        1020,
+        80
+      ],
+      "size": [
+        370,
+        200
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "fps",
+          "type": "FLOAT",
+          "link": 2
+        },
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 3
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "VimooSaveVideo"
+      },
+      "widgets_values": [
+        "vimoo_v1_t2v_distilled",
+        "auto",
+        19
+      ]
+    }
+  ],
+  "links": [
+    [
+      1,
+      1,
+      0,
+      2,
+      0,
+      "MODEL"
+    ],
+    [
+      2,
+      50,
+      1,
+      3,
+      0,
+      "FLOAT"
+    ],
+    [
+      3,
+      50,
+      0,
+      3,
+      1,
+      "IMAGE"
+    ],
+    [
+      4,
+      2,
+      0,
+      50,
+      0,
+      "MODEL"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {},
+  "version": 0.4,
+  "revision": 0,
+  "definitions": {
+    "subgraphs": [
+      {
+        "id": "e43c888f-8a51-50e5-8872-3b20d77323fb",
+        "version": 1,
+        "revision": 0,
+        "config": {},
+        "name": "Vimoo-1.0 T2V Distilled",
+        "state": {
+          "lastGroupId": 0,
+          "lastNodeId": 11,
+          "lastLinkId": 23,
+          "lastRerouteId": 0
+        },
+        "inputNode": {
+          "id": -10,
+          "bounding": [
+            -320,
+            40,
+            210,
+            420
+          ]
+        },
+        "outputNode": {
+          "id": -20,
+          "bounding": [
+            1450,
+            40,
+            170,
+            120
+          ]
+        },
+        "inputs": [
+          {
+            "id": "6bd86ae6-0ecd-54b0-bcad-f438b3cdfd2d",
+            "name": "model",
+            "label": "model",
+            "type": "MODEL",
+            "linkIds": [
+              1
+            ],
+            "pos": [
+              -100,
+              80
+            ]
+          },
+          {
+            "id": "071b719c-1e81-574d-a2f6-894a6e240747",
+            "name": "prompt",
+            "label": "prompt",
+            "type": "STRING",
+            "linkIds": [
+              3
+            ],
+            "pos": [
+              -100,
+              104
+            ]
+          },
+          {
+            "id": "62997cc1-cd6d-5efc-978d-08f4c81be478",
+            "name": "resolution",
+            "label": "resolution",
+            "type": "COMBO",
+            "linkIds": [
+              17
+            ],
+            "pos": [
+              -100,
+              128
+            ]
+          },
+          {
+            "id": "d03d1472-ac57-54a1-9b0e-bb4902179e41",
+            "name": "width",
+            "label": "width",
+            "type": "INT",
+            "linkIds": [
+              18
+            ],
+            "pos": [
+              -100,
+              152
+            ]
+          },
+          {
+            "id": "163a96de-3e14-50f3-9ed2-67a6c30201c6",
+            "name": "height",
+            "label": "height",
+            "type": "INT",
+            "linkIds": [
+              19
+            ],
+            "pos": [
+              -100,
+              176
+            ]
+          },
+          {
+            "id": "c30b9165-02a1-5e6c-8b8e-4e263229954b",
+            "name": "length",
+            "label": "length",
+            "type": "INT",
+            "linkIds": [
+              8
+            ],
+            "pos": [
+              -100,
+              200
+            ]
+          },
+          {
+            "id": "bb19a1a8-d339-530e-a7a3-f60f22d96a30",
+            "name": "seed",
+            "label": "seed",
+            "type": "INT",
+            "linkIds": [
+              9
+            ],
+            "pos": [
+              -100,
+              224
+            ]
+          },
+          {
+            "id": "0759332a-aa2e-5664-9682-c13fc4094da3",
+            "name": "fps",
+            "label": "fps",
+            "type": "FLOAT",
+            "linkIds": [
+              21
+            ],
+            "pos": [
+              -100,
+              248
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "id": "690dca12-4227-5f09-b91a-84ff7b127e55",
+            "name": "images",
+            "type": "IMAGE",
+            "linkIds": [
+              22
+            ],
+            "pos": [
+              1450,
+              80
+            ]
+          },
+          {
+            "id": "7a293887-68a9-5f53-9425-5f5a4aa1a31b",
+            "name": "fps",
+            "type": "FLOAT",
+            "linkIds": [
+              23
+            ],
+            "pos": [
+              1450,
+              104
+            ]
+          }
+        ],
+        "widgets": [],
+        "nodes": [
+          {
+            "id": 1,
+            "type": "VimooDistilledLoRALoader",
+            "pos": [
+              0,
+              0
+            ],
+            "size": [
+              370,
+              330
+            ],
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "model",
+                "type": "MODEL",
+                "link": 1
+              }
+            ],
+            "outputs": [
+              {
+                "name": "model",
+                "type": "MODEL",
+                "links": [
+                  2,
+                  5,
+                  11
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "VimooDistilledLoRALoader"
+            },
+            "widgets_values": [
+              "vimoo_v1_t2v_distilled_lora_bf16.safetensors"
+            ]
+          },
+          {
+            "id": 2,
+            "type": "VimooTextEncoderLoader",
+            "pos": [
+              440,
+              0
+            ],
+            "size": [
+              370,
+              330
+            ],
+            "flags": {},
+            "order": 1,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "model",
+                "type": "MODEL",
+                "link": 2
+              }
+            ],
+            "outputs": [
+              {
+                "name": "CLIP",
+                "type": "CLIP",
+                "links": [
+                  4
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "VimooTextEncoderLoader"
+            },
+            "widgets_values": [
+              "vimoo_v1_qwen2_5_vl_7b_bf16.safetensors",
+              "vimoo_v1_glyph_byt5_fp32.safetensors",
+              "precise",
+              "bf16_transposed_ffn"
+            ]
+          },
+          {
+            "id": 3,
+            "type": "VimooScheduler",
+            "pos": [
+              880,
+              0
+            ],
+            "size": [
+              370,
+              330
+            ],
+            "flags": {},
+            "order": 2,
+            "mode": 0,
+            "inputs": [],
+            "outputs": [
+              {
+                "name": "SIGMAS",
+                "type": "SIGMAS",
+                "links": [
+                  14
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "VimooScheduler"
+            },
+            "widgets_values": [
+              "t2v_distilled",
+              8,
+              12.0
+            ]
+          },
+          {
+            "id": 4,
+            "type": "VimooTextEncode",
+            "pos": [
+              0,
+              470
+            ],
+            "size": [
+              370,
+              330
+            ],
+            "flags": {},
+            "order": 3,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "text",
+                "type": "STRING",
+                "link": 3,
+                "widget": {
+                  "name": "text"
+                }
+              },
+              {
+                "name": "clip",
+                "type": "CLIP",
+                "link": 4
+              }
+            ],
+            "outputs": [
+              {
+                "name": "CONDITIONING",
+                "type": "CONDITIONING",
+                "links": [
+                  12
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "VimooTextEncode"
+            },
+            "widgets_values": [
+              "Macro shot of an exposed mechanical watch movement on matte dark slate: rhodium-plated bridges with fine parallel striping, polished bevels, deep red jewels, heat-blued screws, and a golden balance wheel with a fine hairspring at the exact center. The balance wheel swings vigorously through wide arcs from the first frame, the hairspring visibly breathing, while the escape wheel beside it advances in crisp, rapid ticks. The camera makes one bold, smooth move: a sweeping orbit to the right combined with a push-in, travelling from the full circular movement to a close view of the balance wheel, always centered. Bright specular highlights race across the striped bridges and bevels as angles change, and foreground bridge edges slide past the lens in parallax. Controlled upper-left key light, cool rim light, refined neutral color. No logos, numbers or markings, one continuous shot.",
+              true,
+              1000
+            ]
+          },
+          {
+            "id": 5,
+            "type": "VimooVAELoader",
+            "pos": [
+              440,
+              470
+            ],
+            "size": [
+              370,
+              330
+            ],
+            "flags": {},
+            "order": 4,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "model",
+                "type": "MODEL",
+                "link": 5
+              }
+            ],
+            "outputs": [
+              {
+                "name": "VAE",
+                "type": "VAE",
+                "links": [
+                  16
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "VimooVAELoader"
+            },
+            "widgets_values": [
+              "vimoo_v1_wan22_ti2v_vae_fp32.safetensors",
+              false
+            ]
+          },
+          {
+            "id": 6,
+            "type": "VimooEmptyLatentVideo",
+            "pos": [
+              880,
+              470
+            ],
+            "size": [
+              370,
+              330
+            ],
+            "flags": {},
+            "order": 5,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "width",
+                "type": "INT",
+                "link": 6,
+                "widget": {
+                  "name": "width"
+                }
+              },
+              {
+                "name": "height",
+                "type": "INT",
+                "link": 7,
+                "widget": {
+                  "name": "height"
+                }
+              },
+              {
+                "name": "length",
+                "type": "INT",
+                "link": 8,
+                "widget": {
+                  "name": "length"
+                }
+              }
+            ],
+            "outputs": [
+              {
+                "name": "LATENT",
+                "type": "LATENT",
+                "links": [
+                  13
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "VimooEmptyLatentVideo"
+            },
+            "widgets_values": [
+              1280,
+              720,
+              121,
+              1
+            ]
+          },
+          {
+            "id": 7,
+            "type": "VimooSampler",
+            "pos": [
+              0,
+              940
+            ],
+            "size": [
+              370,
+              330
+            ],
+            "flags": {},
+            "order": 6,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "seed",
+                "type": "INT",
+                "link": 9,
+                "widget": {
+                  "name": "seed"
+                }
+              },
+              {
+                "name": "fps",
+                "type": "FLOAT",
+                "link": 10,
+                "widget": {
+                  "name": "fps"
+                }
+              },
+              {
+                "name": "model",
+                "type": "MODEL",
+                "link": 11
+              },
+              {
+                "name": "positive",
+                "type": "CONDITIONING",
+                "link": 12
+              },
+              {
+                "name": "latent_image",
+                "type": "LATENT",
+                "link": 13
+              },
+              {
+                "name": "sigmas",
+                "type": "SIGMAS",
+                "link": 14
+              }
+            ],
+            "outputs": [
+              {
+                "name": "LATENT",
+                "type": "LATENT",
+                "links": [
+                  15
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "VimooSampler"
+            },
+            "widgets_values": [
+              1.0,
+              0.0,
+              1234,
+              "fixed",
+              "stochastic_flowmatch",
+              1.0,
+              1001237,
+              24.0,
+              true,
+              1.0,
+              0.001
+            ]
+          },
+          {
+            "id": 8,
+            "type": "VAEDecode",
+            "pos": [
+              440,
+              940
+            ],
+            "size": [
+              370,
+              330
+            ],
+            "flags": {},
+            "order": 7,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "samples",
+                "type": "LATENT",
+                "link": 15
+              },
+              {
+                "name": "vae",
+                "type": "VAE",
+                "link": 16
+              }
+            ],
+            "outputs": [
+              {
+                "name": "IMAGE",
+                "type": "IMAGE",
+                "links": [
+                  22
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "VAEDecode"
+            },
+            "widgets_values": []
+          },
+          {
+            "id": 9,
+            "type": "VimooResolution",
+            "pos": [
+              880,
+              940
+            ],
+            "size": [
+              370,
+              330
+            ],
+            "flags": {},
+            "order": 8,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "resolution",
+                "type": "COMBO",
+                "link": 17,
+                "widget": {
+                  "name": "resolution"
+                }
+              },
+              {
+                "name": "width",
+                "type": "INT",
+                "link": 18,
+                "widget": {
+                  "name": "width"
+                }
+              },
+              {
+                "name": "height",
+                "type": "INT",
+                "link": 19,
+                "widget": {
+                  "name": "height"
+                }
+              },
+              {
+                "name": "task",
+                "type": "STRING",
+                "link": 20
+              }
+            ],
+            "outputs": [
+              {
+                "name": "width",
+                "type": "INT",
+                "links": [
+                  6
+                ]
+              },
+              {
+                "name": "height",
+                "type": "INT",
+                "links": [
+                  7
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "VimooResolution"
+            },
+            "widgets_values": [
+              "manual",
+              1280,
+              720
+            ]
+          },
+          {
+            "id": 10,
+            "type": "PrimitiveString",
+            "pos": [
+              0,
+              1410
+            ],
+            "size": [
+              370,
+              330
+            ],
+            "flags": {},
+            "order": 9,
+            "mode": 0,
+            "inputs": [],
+            "outputs": [
+              {
+                "name": "STRING",
+                "type": "STRING",
+                "links": [
+                  20
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "PrimitiveString"
+            },
+            "widgets_values": [
+              "t2v"
+            ]
+          },
+          {
+            "id": 11,
+            "type": "PrimitiveFloat",
+            "pos": [
+              440,
+              1410
+            ],
+            "size": [
+              370,
+              330
+            ],
+            "flags": {},
+            "order": 10,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "value",
+                "type": "FLOAT",
+                "link": 21,
+                "widget": {
+                  "name": "value"
+                }
+              }
+            ],
+            "outputs": [
+              {
+                "name": "FLOAT",
+                "type": "FLOAT",
+                "links": [
+                  10,
+                  23
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "PrimitiveFloat"
+            },
+            "widgets_values": [
+              24.0
+            ]
+          }
+        ],
+        "links": [
+          {
+            "id": 1,
+            "origin_id": -10,
+            "origin_slot": 0,
+            "target_id": 1,
+            "target_slot": 0,
+            "type": "MODEL"
+          },
+          {
+            "id": 2,
+            "origin_id": 1,
+            "origin_slot": 0,
+            "target_id": 2,
+            "target_slot": 0,
+            "type": "MODEL"
+          },
+          {
+            "id": 3,
+            "origin_id": -10,
+            "origin_slot": 1,
+            "target_id": 4,
+            "target_slot": 0,
+            "type": "STRING"
+          },
+          {
+            "id": 4,
+            "origin_id": 2,
+            "origin_slot": 0,
+            "target_id": 4,
+            "target_slot": 1,
+            "type": "CLIP"
+          },
+          {
+            "id": 5,
+            "origin_id": 1,
+            "origin_slot": 0,
+            "target_id": 5,
+            "target_slot": 0,
+            "type": "MODEL"
+          },
+          {
+            "id": 6,
+            "origin_id": 9,
+            "origin_slot": 0,
+            "target_id": 6,
+            "target_slot": 0,
+            "type": "INT"
+          },
+          {
+            "id": 7,
+            "origin_id": 9,
+            "origin_slot": 1,
+            "target_id": 6,
+            "target_slot": 1,
+            "type": "INT"
+          },
+          {
+            "id": 8,
+            "origin_id": -10,
+            "origin_slot": 5,
+            "target_id": 6,
+            "target_slot": 2,
+            "type": "INT"
+          },
+          {
+            "id": 9,
+            "origin_id": -10,
+            "origin_slot": 6,
+            "target_id": 7,
+            "target_slot": 0,
+            "type": "INT"
+          },
+          {
+            "id": 10,
+            "origin_id": 11,
+            "origin_slot": 0,
+            "target_id": 7,
+            "target_slot": 1,
+            "type": "FLOAT"
+          },
+          {
+            "id": 11,
+            "origin_id": 1,
+            "origin_slot": 0,
+            "target_id": 7,
+            "target_slot": 2,
+            "type": "MODEL"
+          },
+          {
+            "id": 12,
+            "origin_id": 4,
+            "origin_slot": 0,
+            "target_id": 7,
+            "target_slot": 3,
+            "type": "CONDITIONING"
+          },
+          {
+            "id": 13,
+            "origin_id": 6,
+            "origin_slot": 0,
+            "target_id": 7,
+            "target_slot": 4,
+            "type": "LATENT"
+          },
+          {
+            "id": 14,
+            "origin_id": 3,
+            "origin_slot": 0,
+            "target_id": 7,
+            "target_slot": 5,
+            "type": "SIGMAS"
+          },
+          {
+            "id": 15,
+            "origin_id": 7,
+            "origin_slot": 0,
+            "target_id": 8,
+            "target_slot": 0,
+            "type": "LATENT"
+          },
+          {
+            "id": 16,
+            "origin_id": 5,
+            "origin_slot": 0,
+            "target_id": 8,
+            "target_slot": 1,
+            "type": "VAE"
+          },
+          {
+            "id": 17,
+            "origin_id": -10,
+            "origin_slot": 2,
+            "target_id": 9,
+            "target_slot": 0,
+            "type": "COMBO"
+          },
+          {
+            "id": 18,
+            "origin_id": -10,
+            "origin_slot": 3,
+            "target_id": 9,
+            "target_slot": 1,
+            "type": "INT"
+          },
+          {
+            "id": 19,
+            "origin_id": -10,
+            "origin_slot": 4,
+            "target_id": 9,
+            "target_slot": 2,
+            "type": "INT"
+          },
+          {
+            "id": 20,
+            "origin_id": 10,
+            "origin_slot": 0,
+            "target_id": 9,
+            "target_slot": 3,
+            "type": "STRING"
+          },
+          {
+            "id": 21,
+            "origin_id": -10,
+            "origin_slot": 7,
+            "target_id": 11,
+            "target_slot": 0,
+            "type": "FLOAT"
+          },
+          {
+            "id": 22,
+            "origin_id": 8,
+            "origin_slot": 0,
+            "target_id": -20,
+            "target_slot": 0,
+            "type": "IMAGE"
+          },
+          {
+            "id": 23,
+            "origin_id": 11,
+            "origin_slot": 0,
+            "target_id": -20,
+            "target_slot": 1,
+            "type": "FLOAT"
+          }
+        ],
+        "groups": [],
+        "extra": {}
+      }
+    ]
+  }
+}

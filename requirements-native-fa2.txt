@@ -1,0 +1,5 @@
+# Optional installed native FA2 instead of Hub kernels, shared by all model profiles.
+# Install with --no-build-isolation in the environment that runs ComfyUI.
+packaging>=23
+ninja
+flash-attn==2.8.3

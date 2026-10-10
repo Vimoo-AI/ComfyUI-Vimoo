@@ -1,0 +1,6 @@
+# SageAttention 2.2.0 is installed from pinned upstream source; it is not on PyPI.
+# Requires Git, a matching CUDA Toolkit and a C++ compiler; see docs/performance.md.
+# B300/SM103 uses the separate pinned, patched source build documented there.
+# Hopper/SM90 also needs the upstream d9704247 fake-handler fix in
+# sageattention/sm90_compile.py; see docs/performance.md before use.
+sageattention @ git+https://github.com/thu-ml/SageAttention.git@eb615cf6cf4d221338033340ee2de1c37fbdba4a

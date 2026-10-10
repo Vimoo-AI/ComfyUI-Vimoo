@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.safetensors
+!tests/fixtures/cuda_schedulers.safetensors
+!tests/fixtures/hms_projections.safetensors
+!tests/fixtures/rope_contracts.safetensors
+*.pt
+*.npy
+*.npz
+*.log
+*.so
+outputs/
+
+.pytest_cache/

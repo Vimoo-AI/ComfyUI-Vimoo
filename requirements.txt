@@ -1,0 +1,4 @@
+# Torch and core dependencies are managed by ComfyUI.
+transformers>=4.51,<5
+safetensors>=0.4.5
+sentencepiece>=0.2

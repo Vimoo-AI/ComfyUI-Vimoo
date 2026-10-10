@@ -1,0 +1,1675 @@
+{
+  "last_node_id": 50,
+  "last_link_id": 6,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "VimooModelLoader",
+      "pos": [
+        0,
+        80
+      ],
+      "size": [
+        370,
+        140
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            1
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VimooModelLoader"
+      },
+      "widgets_values": [
+        "vimoo_v1_lite_bf16.safetensors",
+        "bf16"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "VimooPerformanceOptions",
+      "pos": [
+        0,
+        290
+      ],
+      "size": [
+        370,
+        150
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 1
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            4
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VimooPerformanceOptions"
+      },
+      "widgets_values": [
+        "pytorch",
+        false
+      ]
+    },
+    {
+      "id": 3,
+      "type": "VimooTI2VInput",
+      "pos": [
+        0,
+        490
+      ],
+      "size": [
+        370,
+        330
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "task",
+          "type": "STRING",
+          "links": [
+            5
+          ]
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "links": [
+            6
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VimooTI2VInput"
+      },
+      "widgets_values": [
+        "t2v",
+        "none"
+      ]
+    },
+    {
+      "id": 50,
+      "type": "eed309c3-20ca-520c-ab6b-7f5f97f8ef0e",
+      "title": "Vimoo-1.0-Lite TI2V",
+      "pos": [
+        450,
+        80
+      ],
+      "size": [
+        490,
+        610
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "label": "model",
+          "type": "MODEL",
+          "link": 4
+        },
+        {
+          "name": "task",
+          "label": "task",
+          "type": "STRING",
+          "link": 5
+        },
+        {
+          "name": "image",
+          "label": "image",
+          "type": "IMAGE",
+          "link": 6
+        },
+        {
+          "name": "prompt",
+          "label": "prompt",
+          "type": "STRING",
+          "link": null,
+          "widget": {
+            "name": "prompt"
+          }
+        },
+        {
+          "name": "resolution",
+          "label": "resolution",
+          "type": "COMBO",
+          "link": null,
+          "widget": {
+            "name": "resolution"
+          }
+        },
+        {
+          "name": "width",
+          "label": "width",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "width"
+          }
+        },
+        {
+          "name": "height",
+          "label": "height",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "height"
+          }
+        },
+        {
+          "name": "length",
+          "label": "length",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "length"
+          }
+        },
+        {
+          "name": "steps",
+          "label": "steps",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "steps"
+          }
+        },
+        {
+          "name": "t2v_cfg",
+          "label": "t2v_cfg",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "t2v_cfg"
+          }
+        },
+        {
+          "name": "i2v_cfg",
+          "label": "i2v_cfg",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "i2v_cfg"
+          }
+        },
+        {
+          "name": "seed",
+          "label": "seed",
+          "type": "INT",
+          "link": null,
+          "widget": {
+            "name": "seed"
+          }
+        },
+        {
+          "name": "fps",
+          "label": "fps",
+          "type": "FLOAT",
+          "link": null,
+          "widget": {
+            "name": "fps"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "links": [
+            3
+          ]
+        },
+        {
+          "name": "fps",
+          "type": "FLOAT",
+          "links": [
+            2
+          ]
+        }
+      ],
+      "properties": {
+        "vimoo_generation": true
+      },
+      "widgets_values": [
+        "One continuous five-second shot up a narrow stepped alley in the old medina of Chefchaouen, Morocco. Hand-plastered walls in layered indigo, cobalt and pale sky blue show chalky texture and small chips; worn stone steps climb to a central arched deep-blue wooden door beneath a small iron lantern, with terracotta pots of red geraniums on both sides. From the first frame the camera climbs the stairs in a fast, steady rising glide, near pots and wall corners sweeping past the frame edges with strong parallax as the door grows from distant to filling the center. A gust whips the white cotton curtain beside the door high and outward in a billowing arc, loose red petals tumbling down the steps. Warm sun rakes the upper wall, cool shade below. No people, no readable text, crisp stable architecture.",
+        "auto",
+        1280,
+        720,
+        121,
+        50,
+        4.0,
+        5.0,
+        1234,
+        24.0
+      ],
+      "widgets_values_named": {
+        "prompt": "One continuous five-second shot up a narrow stepped alley in the old medina of Chefchaouen, Morocco. Hand-plastered walls in layered indigo, cobalt and pale sky blue show chalky texture and small chips; worn stone steps climb to a central arched deep-blue wooden door beneath a small iron lantern, with terracotta pots of red geraniums on both sides. From the first frame the camera climbs the stairs in a fast, steady rising glide, near pots and wall corners sweeping past the frame edges with strong parallax as the door grows from distant to filling the center. A gust whips the white cotton curtain beside the door high and outward in a billowing arc, loose red petals tumbling down the steps. Warm sun rakes the upper wall, cool shade below. No people, no readable text, crisp stable architecture.",
+        "resolution": "auto",
+        "width": 1280,
+        "height": 720,
+        "length": 121,
+        "steps": 50,
+        "t2v_cfg": 4.0,
+        "i2v_cfg": 5.0,
+        "seed": 1234,
+        "fps": 24.0
+      }
+    },
+    {
+      "id": 4,
+      "type": "VimooSaveVideo",
+      "pos": [
+        1020,
+        80
+      ],
+      "size": [
+        370,
+        200
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "fps",
+          "type": "FLOAT",
+          "link": 2
+        },
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 3
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "VimooSaveVideo"
+      },
+      "widgets_values": [
+        "vimoo_v1_ti2v_lite",
+        "libx264",
+        19
+      ]
+    }
+  ],
+  "links": [
+    [
+      1,
+      1,
+      0,
+      2,
+      0,
+      "MODEL"
+    ],
+    [
+      2,
+      50,
+      1,
+      4,
+      0,
+      "FLOAT"
+    ],
+    [
+      3,
+      50,
+      0,
+      4,
+      1,
+      "IMAGE"
+    ],
+    [
+      4,
+      2,
+      0,
+      50,
+      0,
+      "MODEL"
+    ],
+    [
+      5,
+      3,
+      0,
+      50,
+      1,
+      "STRING"
+    ],
+    [
+      6,
+      3,
+      1,
+      50,
+      2,
+      "IMAGE"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {},
+  "version": 0.4,
+  "revision": 0,
+  "definitions": {
+    "subgraphs": [
+      {
+        "id": "eed309c3-20ca-520c-ab6b-7f5f97f8ef0e",
+        "version": 1,
+        "revision": 0,
+        "config": {},
+        "name": "Vimoo-1.0-Lite TI2V",
+        "state": {
+          "lastGroupId": 0,
+          "lastNodeId": 11,
+          "lastLinkId": 43,
+          "lastRerouteId": 0
+        },
+        "inputNode": {
+          "id": -10,
+          "bounding": [
+            -320,
+            40,
+            210,
+            420
+          ]
+        },
+        "outputNode": {
+          "id": -20,
+          "bounding": [
+            1450,
+            40,
+            170,
+            120
+          ]
+        },
+        "inputs": [
+          {
+            "id": "821a05a2-fc4b-5b82-949f-b40cfb88632c",
+            "name": "model",
+            "label": "model",
+            "type": "MODEL",
+            "linkIds": [
+              6,
+              10,
+              28,
+              33
+            ],
+            "pos": [
+              -100,
+              80
+            ]
+          },
+          {
+            "id": "f91fce11-5b45-550d-936a-253d5d794447",
+            "name": "task",
+            "label": "task",
+            "type": "STRING",
+            "linkIds": [
+              4,
+              11,
+              16,
+              39
+            ],
+            "pos": [
+              -100,
+              104
+            ]
+          },
+          {
+            "id": "81717553-20fe-5e1c-9051-d4c1f1d7f674",
+            "name": "image",
+            "label": "image",
+            "type": "IMAGE",
+            "linkIds": [
+              19,
+              40
+            ],
+            "pos": [
+              -100,
+              128
+            ]
+          },
+          {
+            "id": "8a0ee916-d888-557a-959e-13c43f3d6921",
+            "name": "prompt",
+            "label": "prompt",
+            "type": "STRING",
+            "linkIds": [
+              1
+            ],
+            "pos": [
+              -100,
+              152
+            ]
+          },
+          {
+            "id": "7a6808e8-4c79-5fc7-87e3-de9f12c14021",
+            "name": "resolution",
+            "label": "resolution",
+            "type": "COMBO",
+            "linkIds": [
+              36
+            ],
+            "pos": [
+              -100,
+              176
+            ]
+          },
+          {
+            "id": "b07482d2-f7f1-5057-918d-650fc9cf4fc1",
+            "name": "width",
+            "label": "width",
+            "type": "INT",
+            "linkIds": [
+              37
+            ],
+            "pos": [
+              -100,
+              200
+            ]
+          },
+          {
+            "id": "61d9d15f-e61f-5311-b5b1-25b8dbb28e9d",
+            "name": "height",
+            "label": "height",
+            "type": "INT",
+            "linkIds": [
+              38
+            ],
+            "pos": [
+              -100,
+              224
+            ]
+          },
+          {
+            "id": "0aeef4fb-7bab-554b-86fb-3e02accc400e",
+            "name": "length",
+            "label": "length",
+            "type": "INT",
+            "linkIds": [
+              14
+            ],
+            "pos": [
+              -100,
+              248
+            ]
+          },
+          {
+            "id": "6584f6eb-0f4e-5c47-bebb-e3f80bfdce8e",
+            "name": "steps",
+            "label": "steps",
+            "type": "INT",
+            "linkIds": [
+              7
+            ],
+            "pos": [
+              -100,
+              272
+            ]
+          },
+          {
+            "id": "35039b06-980b-5847-95fc-aa3384ca1861",
+            "name": "t2v_cfg",
+            "label": "t2v_cfg",
+            "type": "FLOAT",
+            "linkIds": [
+              8
+            ],
+            "pos": [
+              -100,
+              296
+            ]
+          },
+          {
+            "id": "fab38abf-681f-5f43-af13-56b8923b90d2",
+            "name": "i2v_cfg",
+            "label": "i2v_cfg",
+            "type": "FLOAT",
+            "linkIds": [
+              9
+            ],
+            "pos": [
+              -100,
+              320
+            ]
+          },
+          {
+            "id": "25dc4123-22a8-54b9-b69e-0073564d9ba5",
+            "name": "seed",
+            "label": "seed",
+            "type": "INT",
+            "linkIds": [
+              24
+            ],
+            "pos": [
+              -100,
+              344
+            ]
+          },
+          {
+            "id": "35ef0a2c-2c9b-53d1-b1ea-3d70e8fd5c04",
+            "name": "fps",
+            "label": "fps",
+            "type": "FLOAT",
+            "linkIds": [
+              41
+            ],
+            "pos": [
+              -100,
+              368
+            ]
+          }
+        ],
+        "outputs": [
+          {
+            "id": "42d19a19-81ac-5194-b749-7d26f4643698",
+            "name": "images",
+            "type": "IMAGE",
+            "linkIds": [
+              42
+            ],
+            "pos": [
+              1450,
+              80
+            ]
+          },
+          {
+            "id": "c1044a82-a9eb-5dee-9d24-95d7eef3dd85",
+            "name": "fps",
+            "type": "FLOAT",
+            "linkIds": [
+              43
+            ],
+            "pos": [
+              1450,
+              104
+            ]
+          }
+        ],
+        "widgets": [],
+        "nodes": [
+          {
+            "id": 1,
+            "type": "VimooTextEncoderLoader",
+            "pos": [
+              0,
+              0
+            ],
+            "size": [
+              370,
+              330
+            ],
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "inputs": [],
+            "outputs": [
+              {
+                "name": "CLIP",
+                "type": "CLIP",
+                "links": [
+                  2
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "VimooTextEncoderLoader"
+            },
+            "widgets_values": [
+              "vimoo_v1_qwen2_5_vl_7b_bf16.safetensors",
+              "vimoo_v1_glyph_byt5_fp32.safetensors",
+              "precise",
+              "lite_ti2v_anchor"
+            ]
+          },
+          {
+            "id": 2,
+            "type": "VimooTI2VTextEncodePair",
+            "pos": [
+              440,
+              0
+            ],
+            "size": [
+              370,
+              330
+            ],
+            "flags": {},
+            "order": 1,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "positive_prompt",
+                "type": "STRING",
+                "link": 1,
+                "widget": {
+                  "name": "positive_prompt"
+                }
+              },
+              {
+                "name": "clip",
+                "type": "CLIP",
+                "link": 2
+              },
+              {
+                "name": "max_sequence_length",
+                "type": "INT",
+                "link": 3
+              },
+              {
+                "name": "task",
+                "type": "STRING",
+                "link": 4
+              },
+              {
+                "name": "cfg",
+                "type": "FLOAT",
+                "link": 5
+              }
+            ],
+            "outputs": [
+              {
+                "name": "positive",
+                "type": "CONDITIONING",
+                "links": [
+                  17
+                ]
+              },
+              {
+                "name": "negative",
+                "type": "CONDITIONING",
+                "links": [
+                  18
+                ]
+              },
+              {
+                "name": "reference_guidance_scale",
+                "type": "FLOAT",
+                "links": [
+                  27
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "VimooTI2VTextEncodePair"
+            },
+            "widgets_values": [
+              "One continuous five-second shot up a narrow stepped alley in the old medina of Chefchaouen, Morocco. Hand-plastered walls in layered indigo, cobalt and pale sky blue show chalky texture and small chips; worn stone steps climb to a central arched deep-blue wooden door beneath a small iron lantern, with terracotta pots of red geraniums on both sides. From the first frame the camera climbs the stairs in a fast, steady rising glide, near pots and wall corners sweeping past the frame edges with strong parallax as the door grows from distant to filling the center. A gust whips the white cotton curtain beside the door high and outward in a billowing arc, loose red petals tumbling down the steps. Warm sun rakes the upper wall, cool shade below. No people, no readable text, crisp stable architecture.",
+              "oversaturated colors, overexposed, static, blurry details, subtitles, style, artwork, painting, still image, grayish overall tone, worst quality, low quality, JPEG artifacts, ugly, mutilated, extra fingers, poorly drawn hands, poorly drawn face, deformed, disfigured, malformed limbs, fused fingers, motionless scene, cluttered background, three legs, many people in the background, walking backwards",
+              true,
+              3.0
+            ]
+          },
+          {
+            "id": 3,
+            "type": "VimooReferenceVAELoader",
+            "pos": [
+              880,
+              0
+            ],
+            "size": [
+              370,
+              330
+            ],
+            "flags": {},
+            "order": 2,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "model",
+                "type": "MODEL",
+                "link": 6
+              }
+            ],
+            "outputs": [
+              {
+                "name": "VAE",
+                "type": "VAE",
+                "links": [
+                  20
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "VimooReferenceVAELoader"
+            },
+            "widgets_values": [
+              "vimoo_v1_wan22_ti2v_vae_fp32.safetensors"
+            ]
+          },
+          {
+            "id": 4,
+            "type": "CLIPVisionLoader",
+            "pos": [
+              0,
+              470
+            ],
+            "size": [
+              370,
+              330
+            ],
+            "flags": {},
+            "order": 3,
+            "mode": 0,
+            "inputs": [],
+            "outputs": [
+              {
+                "name": "CLIP_VISION",
+                "type": "CLIP_VISION",
+                "links": [
+                  21
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "CLIPVisionLoader"
+            },
+            "widgets_values": [
+              "vimoo_v1_siglip_so400m_fp16.safetensors"
+            ]
+          },
+          {
+            "id": 5,
+            "type": "VimooTI2VSchedule",
+            "pos": [
+              440,
+              470
+            ],
+            "size": [
+              370,
+              330
+            ],
+            "flags": {},
+            "order": 4,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "steps",
+                "type": "INT",
+                "link": 7,
+                "widget": {
+                  "name": "steps"
+                }
+              },
+              {
+                "name": "t2v_cfg",
+                "type": "FLOAT",
+                "link": 8,
+                "widget": {
+                  "name": "t2v_cfg"
+                }
+              },
+              {
+                "name": "i2v_cfg",
+                "type": "FLOAT",
+                "link": 9,
+                "widget": {
+                  "name": "i2v_cfg"
+                }
+              },
+              {
+                "name": "model",
+                "type": "MODEL",
+                "link": 10
+              },
+              {
+                "name": "task",
+                "type": "STRING",
+                "link": 11
+              }
+            ],
+            "outputs": [
+              {
+                "name": "sigmas",
+                "type": "SIGMAS",
+                "links": [
+                  32
+                ]
+              },
+              {
+                "name": "cfg",
+                "type": "FLOAT",
+                "links": [
+                  5,
+                  22
+                ]
+              },
+              {
+                "name": "guidance_rescale",
+                "type": "FLOAT",
+                "links": [
+                  23
+                ]
+              },
+              {
+                "name": "first_frame_replace",
+                "type": "BOOLEAN",
+                "links": [
+                  15
+                ]
+              },
+              {
+                "name": "sampler_name",
+                "type": "COMBO",
+                "links": [
+                  25
+                ]
+              },
+              {
+                "name": "max_sequence_length",
+                "type": "INT",
+                "links": [
+                  3
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "VimooTI2VSchedule"
+            },
+            "widgets_values": [
+              50,
+              8.0,
+              4.0,
+              5.0,
+              0.85,
+              0.85,
+              false,
+              "lite",
+              6.0
+            ]
+          },
+          {
+            "id": 6,
+            "type": "VimooTI2VConditioning",
+            "pos": [
+              880,
+              470
+            ],
+            "size": [
+              370,
+              330
+            ],
+            "flags": {},
+            "order": 5,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "width",
+                "type": "INT",
+                "link": 12,
+                "widget": {
+                  "name": "width"
+                }
+              },
+              {
+                "name": "height",
+                "type": "INT",
+                "link": 13,
+                "widget": {
+                  "name": "height"
+                }
+              },
+              {
+                "name": "length",
+                "type": "INT",
+                "link": 14,
+                "widget": {
+                  "name": "length"
+                }
+              },
+              {
+                "name": "first_frame_replace",
+                "type": "BOOLEAN",
+                "link": 15,
+                "widget": {
+                  "name": "first_frame_replace"
+                }
+              },
+              {
+                "name": "task",
+                "type": "STRING",
+                "link": 16
+              },
+              {
+                "name": "positive",
+                "type": "CONDITIONING",
+                "link": 17
+              },
+              {
+                "name": "negative",
+                "type": "CONDITIONING",
+                "link": 18
+              },
+              {
+                "name": "image",
+                "type": "IMAGE",
+                "link": 19
+              },
+              {
+                "name": "vae",
+                "type": "VAE",
+                "link": 20
+              },
+              {
+                "name": "clip_vision",
+                "type": "CLIP_VISION",
+                "link": 21
+              }
+            ],
+            "outputs": [
+              {
+                "name": "positive",
+                "type": "CONDITIONING",
+                "links": [
+                  29
+                ]
+              },
+              {
+                "name": "negative",
+                "type": "CONDITIONING",
+                "links": [
+                  30
+                ]
+              },
+              {
+                "name": "latent",
+                "type": "LATENT",
+                "links": [
+                  31
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "VimooTI2VConditioning"
+            },
+            "widgets_values": [
+              1280,
+              720,
+              121,
+              false,
+              "precise"
+            ]
+          },
+          {
+            "id": 7,
+            "type": "VimooSampler",
+            "pos": [
+              0,
+              940
+            ],
+            "size": [
+              370,
+              330
+            ],
+            "flags": {},
+            "order": 6,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "cfg",
+                "type": "FLOAT",
+                "link": 22,
+                "widget": {
+                  "name": "cfg"
+                }
+              },
+              {
+                "name": "guidance_rescale",
+                "type": "FLOAT",
+                "link": 23,
+                "widget": {
+                  "name": "guidance_rescale"
+                }
+              },
+              {
+                "name": "seed",
+                "type": "INT",
+                "link": 24,
+                "widget": {
+                  "name": "seed"
+                }
+              },
+              {
+                "name": "sampler_name",
+                "type": "COMBO",
+                "link": 25,
+                "widget": {
+                  "name": "sampler_name"
+                }
+              },
+              {
+                "name": "fps",
+                "type": "FLOAT",
+                "link": 26,
+                "widget": {
+                  "name": "fps"
+                }
+              },
+              {
+                "name": "reference_guidance_scale",
+                "type": "FLOAT",
+                "link": 27,
+                "widget": {
+                  "name": "reference_guidance_scale"
+                }
+              },
+              {
+                "name": "model",
+                "type": "MODEL",
+                "link": 28
+              },
+              {
+                "name": "positive",
+                "type": "CONDITIONING",
+                "link": 29
+              },
+              {
+                "name": "negative",
+                "type": "CONDITIONING",
+                "link": 30
+              },
+              {
+                "name": "latent_image",
+                "type": "LATENT",
+                "link": 31
+              },
+              {
+                "name": "sigmas",
+                "type": "SIGMAS",
+                "link": 32
+              }
+            ],
+            "outputs": [
+              {
+                "name": "LATENT",
+                "type": "LATENT",
+                "links": [
+                  34
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "VimooSampler"
+            },
+            "widgets_values": [
+              1.0,
+              0.0,
+              1234,
+              "fixed",
+              "vimoo_lite_ti2v_euler",
+              1.0,
+              1001237,
+              24.0,
+              true,
+              3.0,
+              0.001
+            ]
+          },
+          {
+            "id": 8,
+            "type": "VimooVAELoader",
+            "pos": [
+              440,
+              940
+            ],
+            "size": [
+              370,
+              330
+            ],
+            "flags": {},
+            "order": 7,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "model",
+                "type": "MODEL",
+                "link": 33
+              }
+            ],
+            "outputs": [
+              {
+                "name": "VAE",
+                "type": "VAE",
+                "links": [
+                  35
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "VimooVAELoader"
+            },
+            "widgets_values": [
+              "vimoo_v1_wan22_ti2v_vae_fp32.safetensors",
+              true
+            ]
+          },
+          {
+            "id": 9,
+            "type": "VAEDecode",
+            "pos": [
+              880,
+              940
+            ],
+            "size": [
+              370,
+              330
+            ],
+            "flags": {},
+            "order": 8,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "samples",
+                "type": "LATENT",
+                "link": 34
+              },
+              {
+                "name": "vae",
+                "type": "VAE",
+                "link": 35
+              }
+            ],
+            "outputs": [
+              {
+                "name": "IMAGE",
+                "type": "IMAGE",
+                "links": [
+                  42
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "VAEDecode"
+            },
+            "widgets_values": []
+          },
+          {
+            "id": 10,
+            "type": "VimooResolution",
+            "pos": [
+              0,
+              1410
+            ],
+            "size": [
+              370,
+              330
+            ],
+            "flags": {},
+            "order": 9,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "resolution",
+                "type": "COMBO",
+                "link": 36,
+                "widget": {
+                  "name": "resolution"
+                }
+              },
+              {
+                "name": "width",
+                "type": "INT",
+                "link": 37,
+                "widget": {
+                  "name": "width"
+                }
+              },
+              {
+                "name": "height",
+                "type": "INT",
+                "link": 38,
+                "widget": {
+                  "name": "height"
+                }
+              },
+              {
+                "name": "task",
+                "type": "STRING",
+                "link": 39
+              },
+              {
+                "name": "image",
+                "type": "IMAGE",
+                "link": 40
+              }
+            ],
+            "outputs": [
+              {
+                "name": "width",
+                "type": "INT",
+                "links": [
+                  12
+                ]
+              },
+              {
+                "name": "height",
+                "type": "INT",
+                "links": [
+                  13
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "VimooResolution"
+            },
+            "widgets_values": [
+              "auto",
+              1280,
+              720
+            ]
+          },
+          {
+            "id": 11,
+            "type": "PrimitiveFloat",
+            "pos": [
+              440,
+              1410
+            ],
+            "size": [
+              370,
+              330
+            ],
+            "flags": {},
+            "order": 10,
+            "mode": 0,
+            "inputs": [
+              {
+                "name": "value",
+                "type": "FLOAT",
+                "link": 41,
+                "widget": {
+                  "name": "value"
+                }
+              }
+            ],
+            "outputs": [
+              {
+                "name": "FLOAT",
+                "type": "FLOAT",
+                "links": [
+                  26,
+                  43
+                ]
+              }
+            ],
+            "properties": {
+              "Node name for S&R": "PrimitiveFloat"
+            },
+            "widgets_values": [
+              24.0
+            ]
+          }
+        ],
+        "links": [
+          {
+            "id": 1,
+            "origin_id": -10,
+            "origin_slot": 3,
+            "target_id": 2,
+            "target_slot": 0,
+            "type": "STRING"
+          },
+          {
+            "id": 2,
+            "origin_id": 1,
+            "origin_slot": 0,
+            "target_id": 2,
+            "target_slot": 1,
+            "type": "CLIP"
+          },
+          {
+            "id": 3,
+            "origin_id": 5,
+            "origin_slot": 5,
+            "target_id": 2,
+            "target_slot": 2,
+            "type": "INT"
+          },
+          {
+            "id": 4,
+            "origin_id": -10,
+            "origin_slot": 1,
+            "target_id": 2,
+            "target_slot": 3,
+            "type": "STRING"
+          },
+          {
+            "id": 5,
+            "origin_id": 5,
+            "origin_slot": 1,
+            "target_id": 2,
+            "target_slot": 4,
+            "type": "FLOAT"
+          },
+          {
+            "id": 6,
+            "origin_id": -10,
+            "origin_slot": 0,
+            "target_id": 3,
+            "target_slot": 0,
+            "type": "MODEL"
+          },
+          {
+            "id": 7,
+            "origin_id": -10,
+            "origin_slot": 8,
+            "target_id": 5,
+            "target_slot": 0,
+            "type": "INT"
+          },
+          {
+            "id": 8,
+            "origin_id": -10,
+            "origin_slot": 9,
+            "target_id": 5,
+            "target_slot": 1,
+            "type": "FLOAT"
+          },
+          {
+            "id": 9,
+            "origin_id": -10,
+            "origin_slot": 10,
+            "target_id": 5,
+            "target_slot": 2,
+            "type": "FLOAT"
+          },
+          {
+            "id": 10,
+            "origin_id": -10,
+            "origin_slot": 0,
+            "target_id": 5,
+            "target_slot": 3,
+            "type": "MODEL"
+          },
+          {
+            "id": 11,
+            "origin_id": -10,
+            "origin_slot": 1,
+            "target_id": 5,
+            "target_slot": 4,
+            "type": "STRING"
+          },
+          {
+            "id": 12,
+            "origin_id": 10,
+            "origin_slot": 0,
+            "target_id": 6,
+            "target_slot": 0,
+            "type": "INT"
+          },
+          {
+            "id": 13,
+            "origin_id": 10,
+            "origin_slot": 1,
+            "target_id": 6,
+            "target_slot": 1,
+            "type": "INT"
+          },
+          {
+            "id": 14,
+            "origin_id": -10,
+            "origin_slot": 7,
+            "target_id": 6,
+            "target_slot": 2,
+            "type": "INT"
+          },
+          {
+            "id": 15,
+            "origin_id": 5,
+            "origin_slot": 3,
+            "target_id": 6,
+            "target_slot": 3,
+            "type": "BOOLEAN"
+          },
+          {
+            "id": 16,
+            "origin_id": -10,
+            "origin_slot": 1,
+            "target_id": 6,
+            "target_slot": 4,
+            "type": "STRING"
+          },
+          {
+            "id": 17,
+            "origin_id": 2,
+            "origin_slot": 0,
+            "target_id": 6,
+            "target_slot": 5,
+            "type": "CONDITIONING"
+          },
+          {
+            "id": 18,
+            "origin_id": 2,
+            "origin_slot": 1,
+            "target_id": 6,
+            "target_slot": 6,
+            "type": "CONDITIONING"
+          },
+          {
+            "id": 19,
+            "origin_id": -10,
+            "origin_slot": 2,
+            "target_id": 6,
+            "target_slot": 7,
+            "type": "IMAGE"
+          },
+          {
+            "id": 20,
+            "origin_id": 3,
+            "origin_slot": 0,
+            "target_id": 6,
+            "target_slot": 8,
+            "type": "VAE"
+          },
+          {
+            "id": 21,
+            "origin_id": 4,
+            "origin_slot": 0,
+            "target_id": 6,
+            "target_slot": 9,
+            "type": "CLIP_VISION"
+          },
+          {
+            "id": 22,
+            "origin_id": 5,
+            "origin_slot": 1,
+            "target_id": 7,
+            "target_slot": 0,
+            "type": "FLOAT"
+          },
+          {
+            "id": 23,
+            "origin_id": 5,
+            "origin_slot": 2,
+            "target_id": 7,
+            "target_slot": 1,
+            "type": "FLOAT"
+          },
+          {
+            "id": 24,
+            "origin_id": -10,
+            "origin_slot": 11,
+            "target_id": 7,
+            "target_slot": 2,
+            "type": "INT"
+          },
+          {
+            "id": 25,
+            "origin_id": 5,
+            "origin_slot": 4,
+            "target_id": 7,
+            "target_slot": 3,
+            "type": "COMBO"
+          },
+          {
+            "id": 26,
+            "origin_id": 11,
+            "origin_slot": 0,
+            "target_id": 7,
+            "target_slot": 4,
+            "type": "FLOAT"
+          },
+          {
+            "id": 27,
+            "origin_id": 2,
+            "origin_slot": 2,
+            "target_id": 7,
+            "target_slot": 5,
+            "type": "FLOAT"
+          },
+          {
+            "id": 28,
+            "origin_id": -10,
+            "origin_slot": 0,
+            "target_id": 7,
+            "target_slot": 6,
+            "type": "MODEL"
+          },
+          {
+            "id": 29,
+            "origin_id": 6,
+            "origin_slot": 0,
+            "target_id": 7,
+            "target_slot": 7,
+            "type": "CONDITIONING"
+          },
+          {
+            "id": 30,
+            "origin_id": 6,
+            "origin_slot": 1,
+            "target_id": 7,
+            "target_slot": 8,
+            "type": "CONDITIONING"
+          },
+          {
+            "id": 31,
+            "origin_id": 6,
+            "origin_slot": 2,
+            "target_id": 7,
+            "target_slot": 9,
+            "type": "LATENT"
+          },
+          {
+            "id": 32,
+            "origin_id": 5,
+            "origin_slot": 0,
+            "target_id": 7,
+            "target_slot": 10,
+            "type": "SIGMAS"
+          },
+          {
+            "id": 33,
+            "origin_id": -10,
+            "origin_slot": 0,
+            "target_id": 8,
+            "target_slot": 0,
+            "type": "MODEL"
+          },
+          {
+            "id": 34,
+            "origin_id": 7,
+            "origin_slot": 0,
+            "target_id": 9,
+            "target_slot": 0,
+            "type": "LATENT"
+          },
+          {
+            "id": 35,
+            "origin_id": 8,
+            "origin_slot": 0,
+            "target_id": 9,
+            "target_slot": 1,
+            "type": "VAE"
+          },
+          {
+            "id": 36,
+            "origin_id": -10,
+            "origin_slot": 4,
+            "target_id": 10,
+            "target_slot": 0,
+            "type": "COMBO"
+          },
+          {
+            "id": 37,
+            "origin_id": -10,
+            "origin_slot": 5,
+            "target_id": 10,
+            "target_slot": 1,
+            "type": "INT"
+          },
+          {
+            "id": 38,
+            "origin_id": -10,
+            "origin_slot": 6,
+            "target_id": 10,
+            "target_slot": 2,
+            "type": "INT"
+          },
+          {
+            "id": 39,
+            "origin_id": -10,
+            "origin_slot": 1,
+            "target_id": 10,
+            "target_slot": 3,
+            "type": "STRING"
+          },
+          {
+            "id": 40,
+            "origin_id": -10,
+            "origin_slot": 2,
+            "target_id": 10,
+            "target_slot": 4,
+            "type": "IMAGE"
+          },
+          {
+            "id": 41,
+            "origin_id": -10,
+            "origin_slot": 12,
+            "target_id": 11,
+            "target_slot": 0,
+            "type": "FLOAT"
+          },
+          {
+            "id": 42,
+            "origin_id": 9,
+            "origin_slot": 0,
+            "target_id": -20,
+            "target_slot": 0,
+            "type": "IMAGE"
+          },
+          {
+            "id": 43,
+            "origin_id": 11,
+            "origin_slot": 0,
+            "target_id": -20,
+            "target_slot": 1,
+            "type": "FLOAT"
+          }
+        ],
+        "groups": [],
+        "extra": {}
+      }
+    ]
+  }
+}
