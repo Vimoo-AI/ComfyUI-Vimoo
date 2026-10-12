@@ -37,7 +37,7 @@ Vimoo-1.0 T2V and I2V offer the highest quality, Vimoo-1.0-Lite TI2V runs faster
 
 - **ComfyUI:** 0.34.0 or later.
 - **Python:** 3.10 or later; install dependencies in the environment that launches ComfyUI.
-- **PyTorch:** 2.9.0 or later, using a CUDA-enabled build compatible with your GPU and driver. Choose the build with the [PyTorch installation selector](https://pytorch.org/get-started/locally/).
+- **PyTorch:** 2.9.0 with CUDA 13.0 (`cu130`), torchvision 0.24.0 and torchaudio 2.9.0. Use an NVIDIA driver compatible with CUDA 13.0.
 - **Hardware:** an NVIDIA CUDA GPU.
 - **Attention:** all supplied workflows default to PyTorch SDPA (`attention=pytorch`), with no additional attention package. Install FA2, FA3, FA4 or SageAttention only when selecting it in **Vimoo Performance Options**; see [performance options](docs/performance.md).
 
@@ -48,15 +48,16 @@ Use separate environments for ComfyUI and the Diffusers examples; their Transfor
 Install [ComfyUI](https://github.com/Comfy-Org/ComfyUI), then run these commands from its root directory:
 
 ```bash
+python3 -m pip install "torch==2.9.0+cu130" "torchvision==0.24.0+cu130" "torchaudio==2.9.0+cu130" --index-url https://download.pytorch.org/whl/cu130
 git clone https://github.com/Vimoo-AI/ComfyUI-Vimoo custom_nodes/ComfyUI-Vimoo
-python -m pip install -r custom_nodes/ComfyUI-Vimoo/requirements.txt
+python3 -m pip install -r custom_nodes/ComfyUI-Vimoo/requirements.txt
 ```
 
 Restart ComfyUI and refresh the browser to load the Vimoo nodes and templates.
 
 ### Download weights
 
-Run these commands from the ComfyUI root directory. Install the Hugging Face CLI with `python -m pip install -U huggingface_hub` if `hf` is not available. Vimoo-1.0 and its Distilled models are in [Vimoo-1.0-ComfyUI](https://huggingface.co/Vimoo-AI/Vimoo-1.0-ComfyUI); Vimoo-1.0-Lite models are in [Vimoo-1.0-Lite-ComfyUI](https://huggingface.co/Vimoo-AI/Vimoo-1.0-Lite-ComfyUI). Every workflow needs the shared text encoders and VAE; I2V workflows also use the SigLIP vision encoder. Both repositories include these shared files; if you use only Vimoo-1.0-Lite models, download them from `Vimoo-AI/Vimoo-1.0-Lite-ComfyUI` instead:
+Run these commands from the ComfyUI root directory. Install the Hugging Face CLI with `python3 -m pip install -U huggingface_hub` if `hf` is not available. Vimoo-1.0 and its Distilled models are in [Vimoo-1.0-ComfyUI](https://huggingface.co/Vimoo-AI/Vimoo-1.0-ComfyUI); Vimoo-1.0-Lite models are in [Vimoo-1.0-Lite-ComfyUI](https://huggingface.co/Vimoo-AI/Vimoo-1.0-Lite-ComfyUI). Every workflow needs the shared text encoders and VAE; I2V workflows also use the SigLIP vision encoder. Both repositories include these shared files; if you use only Vimoo-1.0-Lite models, download them from `Vimoo-AI/Vimoo-1.0-Lite-ComfyUI` instead:
 
 ```bash
 hf download Vimoo-AI/Vimoo-1.0-ComfyUI \
@@ -176,7 +177,7 @@ The Prompt Guide describes automatic prompt enhancement in the hosted service. L
 Use the Python environment that runs ComfyUI:
 
 ```bash
-PYTHONPATH=/path/to/ComfyUI python -m unittest discover -s tests -q
+PYTHONPATH=/path/to/ComfyUI python3 -m unittest discover -s tests -q
 ruff check .
 ruff format --check .
 ```

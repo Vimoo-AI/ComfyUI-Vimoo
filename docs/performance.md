@@ -15,18 +15,34 @@ model loader and sampler.
 | `fa4` | Install `requirements-fa4.txt`. |
 | `sage` | Install `requirements-sageattention.txt`; uses quantized attention and can change the result. |
 
+Install the [PyTorch 2.9.0 CUDA 13.0 build](https://pytorch.org/get-started/previous-versions/#v290)
+from the [Quick Start](../README.md#-quick-start) first. For SageAttention or
+native FA2 source builds, install CUDA Toolkit 13.0, Git and a C++ compiler.
+The PyTorch wheel includes CUDA runtime libraries; the Toolkit supplies `nvcc`.
+On Linux, select the Toolkit before building (adjust the path if installed elsewhere):
+
+```bash
+export CUDA_HOME=/usr/local/cuda-13.0
+export PATH="$CUDA_HOME/bin:$PATH"
+nvcc --version
+python3 -c "import torch; print(torch.__version__, torch.version.cuda)"
+```
+
+`nvcc` must report release `13.0`, and PyTorch must report `2.9.0+cu130` and `13.0`.
+Rebuild installed CUDA extensions after changing the PyTorch/CUDA build.
+
 Run only the command for your chosen backend, from the ComfyUI root, using the
 Python environment that launches ComfyUI:
 
 ```bash
 # FA2 / FA3 Hub kernels
-python -m pip install -r custom_nodes/ComfyUI-Vimoo/requirements-flash-attn.txt
+python3 -m pip install -r custom_nodes/ComfyUI-Vimoo/requirements-flash-attn.txt
 # Optional native FA2 instead of Hub kernels
-python -m pip install --no-build-isolation -r custom_nodes/ComfyUI-Vimoo/requirements-native-fa2.txt
+python3 -m pip install --no-build-isolation -r custom_nodes/ComfyUI-Vimoo/requirements-native-fa2.txt
 # FA4
-python -m pip install -r custom_nodes/ComfyUI-Vimoo/requirements-fa4.txt
+python3 -m pip install -r custom_nodes/ComfyUI-Vimoo/requirements-fa4.txt
 # SageAttention 2
-python -m pip install --no-build-isolation -r custom_nodes/ComfyUI-Vimoo/requirements-sageattention.txt
+python3 -m pip install --no-build-isolation -r custom_nodes/ComfyUI-Vimoo/requirements-sageattention.txt
 ```
 
 Hub kernels need network access or cached binaries matching Torch, CUDA, your OS
@@ -64,7 +80,7 @@ Use one ComfyUI process and `batch=1`. For Vimoo-1.0 T2V / I2V Distilled in BF16
 the supplied release settings. From the ComfyUI root:
 
 ```bash
-python main.py --enable-dynamic-vram --async-offload 2 \
+python3 main.py --enable-dynamic-vram --async-offload 2 \
   --reserve-vram 3 --cache-ram 6 8
 ```
 
@@ -94,8 +110,8 @@ the selected release profile. Changing the decode switch can change the result.
 
 Vimoo-1.0-Lite TI2V uses `im2col_bounded`, which requires an NVIDIA GPU and
 **PyTorch 2.9.0 or later**. It selects the bounded im2col convolution directly,
-independently of Torch/cuDNN convolution dispatch. Choose a compatible CUDA build with
-the [PyTorch installation selector](https://pytorch.org/get-started/locally/).
+independently of Torch/cuDNN convolution dispatch. Use the PyTorch 2.9.0 CUDA 13.0
+build from the [Quick Start](../README.md#-quick-start).
 Its convolution workspace budget is **2 GiB**;
 weights and activations need additional memory. Enable tiled decoding if the whole video does not fit. The `comfy` backend
 follows the general runtime requirements.
