@@ -117,3 +117,44 @@ test("recreated native widget projections are hidden and old callbacks are detac
     node.onRemoved(); node.graph = null; node.resizes = 0;
     await flush(); assert.equal(node.resizes, 0);
 });
+
+test("T2V ignores a saved missing image and valid uploads survive task changes", () => {
+    for (const comfyClass of ["VimooTI2VInput", "VimooDistilledTI2VInput"]) {
+        const { node, original } = fixture();
+        const task = { name: "task", value: "t2v", callback: original };
+        const image = { name: "image", value: "missing-reference.png", callback: original,
+            options: { values: ["none", "uploaded.png"] } };
+        Object.assign(node, { comfyClass, properties: {}, inputs: [], widgets: [task, image] });
+        configure(node); configure(node);
+        assert.equal(image.value, "none");
+        assert.equal(image.originalCalls, 1);
+        change(task, "i2v");
+        assert.equal(image.value, "none");
+        change(image, "uploaded.png");
+        change(task, "t2v");
+        assert.equal(image.value, "uploaded.png");
+        change(task, "i2v");
+        assert.equal(image.value, "uploaded.png");
+        change(image, "none");
+        assert.equal(image.value, "none");
+        change(task, "t2v"); change(task, "i2v");
+        assert.equal(image.value, "none");
+        node.onRemoved(); node.graph = null;
+        assert.equal(task.callback, original);
+        assert.equal(image.callback, original);
+    }
+});
+
+test("uploading an available image in T2V retains the selection without changing the task", () => {
+    const { node, original } = fixture();
+    const task = { name: "task", value: "t2v", callback: original };
+    const image = { name: "image", value: "none", callback: original,
+        options: { values: () => ["none", "uploaded.png"] } };
+    Object.assign(node, { comfyClass: "VimooDistilledTI2VInput", properties: {}, inputs: [], widgets: [task, image] });
+    configure(node);
+    change(image, "uploaded.png");
+    assert.equal(image.value, "uploaded.png");
+    assert.equal(task.value, "t2v");
+    change(task, "i2v");
+    assert.equal(image.value, "uploaded.png");
+});

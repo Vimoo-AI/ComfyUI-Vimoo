@@ -1,6 +1,7 @@
 // Node state is private to this extension and does not enter workflow serialization.
 const states = new WeakMap();
 const subscriptions = new WeakMap();
+const taskInputs = new Set(["VimooTI2VInput", "VimooDistilledTI2VInput"]);
 
 function subscribe(widget, refresh) {
     if (!widget) return;
@@ -31,7 +32,8 @@ function unsubscribe(widget, refresh) {
     }
 }
 
-function taskWidget(node) {
+function taskWidget(node, widgets) {
+    if (taskInputs.has(node.comfyClass ?? node.type)) return widgets?.find((widget) => widget.name === "task");
     const port = node.inputs?.find((input) => input.name === "task");
     const link = port?.link != null ? node.graph?.links?.[port.link] : null;
     return link ? node.graph?.getNodeById(link.origin_id)?.widgets?.find((widget) => widget.name === "task") : null;
@@ -62,14 +64,28 @@ function updateVisibility(node, widgets) {
     const manual = resolution.value === "manual";
     let changed = showWidget(find("width"), manual);
     changed = showWidget(find("height"), manual) || changed;
-    const task = taskWidget(node)?.value ?? "t2v";
+    const task = taskWidget(node, widgets)?.value ?? "t2v";
     changed = showWidget(find("t2v_cfg"), task === "t2v") || changed;
     return showWidget(find("i2v_cfg"), task === "i2v") || changed;
 }
 
 function updateBindings(node, state, widgets) {
     bindWidget(state, "resolution", widgets?.find((widget) => widget.name === "resolution"));
-    bindWidget(state, "task", taskWidget(node));
+    bindWidget(state, "task", taskWidget(node, widgets));
+    bindWidget(state, "image", taskInputs.has(node.comfyClass ?? node.type)
+        ? widgets?.find((widget) => widget.name === "image") : null);
+}
+
+function updateTaskInput(state) {
+    const task = state.task?.value;
+    const image = state.image;
+    if (!image) return;
+    const values = typeof image.options?.values === "function" ? image.options.values() : image.options?.values;
+    const available = Array.isArray(values) && values.includes(image.value);
+    if (task === "t2v" && image.value !== "none" && !available) {
+        image.value = "none";
+        image.callback?.call(image, "none");
+    }
 }
 
 function observePromotedWidgets(node, state) {
@@ -102,12 +118,14 @@ function createState(node) {
         if (state.removed || !node.graph) {
             bindWidget(state, "task", null);
             bindWidget(state, "resolution", null);
+            bindWidget(state, "image", null);
             return;
         }
         state.refreshing = true;
         try {
             const widgets = node.widgets;
             updateBindings(node, state, widgets);
+            updateTaskInput(state);
             updateVisibility(node, widgets);
             node.setSize?.([node.size[0], node.computeSize()[1]]);
             node.graph.setDirtyCanvas?.(true, true);
@@ -133,6 +151,7 @@ function createState(node) {
         state.removed = true;
         bindWidget(state, "task", null);
         bindWidget(state, "resolution", null);
+        bindWidget(state, "image", null);
         return onRemoved?.apply(this, args);
     };
     const onAdded = node.onAdded;
@@ -147,7 +166,8 @@ function createState(node) {
 }
 
 export function configure(node) {
-    if (!node.properties?.vimoo_generation && node.comfyClass !== "VimooResolution") return;
+    if (!node.properties?.vimoo_generation && node.comfyClass !== "VimooResolution"
+        && !taskInputs.has(node.comfyClass ?? node.type)) return;
     let state = states.get(node);
     if (!state) {
         state = createState(node);

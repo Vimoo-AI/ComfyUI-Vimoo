@@ -111,7 +111,16 @@ class WorkflowTests(unittest.TestCase):
                 self.assertTrue(prompts)
                 self.assertEqual(set(prompts), {entry["prompt"]})
                 reference = entry["referenceImage"]
-                self.assertEqual(inputs, [reference] if reference else [])
+                needs_reference = any(
+                    node["type"] == "VimooImageLoader"
+                    or (
+                        node["type"] in ("VimooTI2VInput", "VimooDistilledTI2VInput")
+                        and node["widgets_values"][0] == "i2v"
+                    )
+                    for graph in graphs
+                    for node in graph["nodes"]
+                )
+                self.assertEqual(inputs, [reference] if needs_reference else [])
                 if reference:
                     references.append(reference)
                     with Image.open(ROOT / "assets" / reference) as image:
@@ -198,9 +207,7 @@ class WorkflowTests(unittest.TestCase):
                         if node["type"] in ("VimooTI2VInput", "VimooDistilledTI2VInput")
                     ]
                     self.assertEqual(len(image_nodes), 1)
-                    self.assertEqual(
-                        image_nodes[0]["widgets_values"], ["t2v", "vimoo_v1_ti2v_lite_distilled.png"]
-                    )
+                    self.assertEqual(image_nodes[0]["widgets_values"], ["t2v", "none"])
                     self.assertEqual(sum(node["type"] == "VimooTI2VConditioning" for node in all_nodes), 1)
                     self.assertEqual(sum(node["type"] == "VimooTI2VSchedule" for node in all_nodes), 1)
                     self.assertFalse(any(node["type"] == "VimooImageLoader" for node in all_nodes))

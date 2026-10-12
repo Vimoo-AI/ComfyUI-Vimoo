@@ -42,6 +42,21 @@ class TI2VTests(unittest.TestCase):
             self.assertEqual(ti2v.VimooTI2VInput().load("t2v", "missing.png"), ("t2v", None))
         self.assertNotEqual(ti2v.VimooTI2VInput.VALIDATE_INPUTS("i2v", "none"), True)
 
+    def test_t2v_works_without_a_media_input_and_i2v_still_requires_one(self):
+        for node_type in (ti2v.VimooTI2VInput, ti2v.VimooDistilledTI2VInput):
+            with self.subTest(node=node_type.__name__):
+                schema = node_type.INPUT_TYPES()
+                self.assertTrue(schema["required"]["image"][1]["image_upload"])
+                self.assertEqual(schema["required"]["image"][1]["default"], "none")
+                with patch.object(ti2v.folder_paths, "exists_annotated_filepath", side_effect=AssertionError):
+                    self.assertIs(node_type.VALIDATE_INPUTS("t2v"), True)
+                    self.assertEqual(node_type.IS_CHANGED("t2v"), "t2v")
+                    self.assertEqual(node_type().load("t2v"), ("t2v", None))
+                self.assertIn("requires an uploaded reference image", node_type.VALIDATE_INPUTS("i2v"))
+                self.assertIn("requires an uploaded reference image", node_type.VALIDATE_INPUTS("i2v", None))
+                with self.assertRaisesRegex(ValueError, "requires an uploaded reference image"):
+                    node_type().load("i2v")
+
     def test_lazy_routing_and_condition_cleanup(self):
         node = ti2v.VimooTI2VConditioning()
         self.assertEqual(node.check_lazy_status("t2v"), [])

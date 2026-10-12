@@ -97,7 +97,7 @@ class VimooTI2VInput:
         images, options = inputs["required"]["image"]
         inputs["required"] = {
             "task": (["t2v", "i2v"],),
-            "image": (["none", *images], options),
+            "image": (["none", *images], {**options, "default": "none"}),
         }
         return inputs
 
@@ -107,16 +107,18 @@ class VimooTI2VInput:
     CATEGORY = "Vimoo"
 
     @classmethod
-    def VALIDATE_INPUTS(cls, task, image, model=None):
+    def VALIDATE_INPUTS(cls, task, image="none", model=None):
         if task not in ("t2v", "i2v"):
             return "Choose t2v or i2v"
+        if task == "i2v" and not image:
+            return "I2V requires an uploaded reference image"
         return True if task == "t2v" else VimooImageLoader.VALIDATE_INPUTS(image, model)
 
     @classmethod
-    def IS_CHANGED(cls, task, image, model=None):
+    def IS_CHANGED(cls, task, image="none", model=None):
         return "t2v" if task == "t2v" else VimooImageLoader.IS_CHANGED(image, model)
 
-    def load(self, task, image, model=None):
+    def load(self, task, image="none", model=None):
         valid = self.VALIDATE_INPUTS(task, image)
         if valid is not True:
             raise ValueError(valid)
@@ -130,7 +132,7 @@ class VimooDistilledTI2VInput(VimooTI2VInput):
         "Selects T2V or I2V for Vimoo-1.0-Lite TI2V Distilled, using its PIL reference-image decoder."
     )
 
-    def load(self, task, image, model=None):
+    def load(self, task, image="none", model=None):
         valid = self.VALIDATE_INPUTS(task, image)
         if valid is not True:
             raise ValueError(valid)
