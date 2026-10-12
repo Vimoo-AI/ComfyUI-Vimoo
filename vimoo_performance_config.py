@@ -44,8 +44,10 @@ class PerformanceConfig:
         default="per_thread",
         metadata={"choices": ("per_warp", "per_thread"), "noun": "SageAttention QK quantization granularity"},
     )
+    # SM89's single-level FP8 PV accumulation loses large V outliers; the
+    # two-level mode matches Hopper's SM90 kernel, which serves it there.
     sage_pv_accum_dtype: str = field(
-        default="fp32",
+        default="fp32+fp32",
         metadata={"choices": ("fp16", "fp16+fp32", "fp32", "fp32+fp32", "fp32+fp16"), "noun": None},
     )
     sage_smooth_k: bool = True

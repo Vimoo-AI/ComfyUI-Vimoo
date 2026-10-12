@@ -110,14 +110,15 @@ class ResolutionTests(unittest.TestCase):
 
     def test_all_release_profiles_preserve_effective_performance_defaults(self):
         profiles = [
-            ({"vimoo_sampling_profile": "standard_t2v"}, True, False),
-            ({"vimoo_sampling_profile": "standard_i2v"}, True, False),
-            ({"vimoo_sampling_profile": "lite_ti2v_anchor"}, False, True),
-            ({"vimoo_distilled": {"profile": "t2v_distilled"}}, True, False),
-            ({"vimoo_distilled": {"profile": "i2v_distilled"}}, True, False),
-            ({"vimoo_distilled": {"profile": "lite_ti2v_distilled"}}, True, False),
+            ({"vimoo_sampling_profile": "standard_t2v"}, True),
+            ({"vimoo_sampling_profile": "standard_i2v"}, True),
+            ({"vimoo_sampling_profile": "lite_ti2v_anchor"}, False),
+            ({"vimoo_distilled": {"profile": "t2v_distilled"}}, True),
+            ({"vimoo_distilled": {"profile": "i2v_distilled"}}, True),
+            ({"vimoo_distilled": {"profile": "lite_ti2v_distilled"}}, True),
         ]
-        for options, precise, prefetch in profiles:
+        for options, precise in profiles:
+            lite_distilled = options.get("vimoo_distilled", {}).get("profile") == "lite_ti2v_distilled"
             for attention, compiled in (("sage", False), ("fa2", True)):
                 with self.subTest(options=options, attention=attention, compile=compiled):
                     config = performance.release_performance_config(
@@ -128,18 +129,18 @@ class ResolutionTests(unittest.TestCase):
                     self.assertEqual(config.compile_mode, "default")
                     self.assertEqual(config.compile_dynamic, "auto")
                     self.assertEqual(config.precise_math, precise)
-                    self.assertEqual(config.block_prefetch, prefetch)
+                    self.assertTrue(config.block_prefetch)
                     self.assertEqual(config.memory_usage_factor, 4.0)
-                    self.assertEqual(config.text_padding, "keep")
-                    self.assertFalse(config.fused_qkv)
+                    self.assertEqual(config.text_padding, "drop" if lite_distilled else "keep")
+                    self.assertEqual(config.fused_qkv, lite_distilled)
                     self.assertEqual(config.sage_scope, "joint")
                     self.assertEqual(config.sage_fallback, "pytorch")
                     self.assertEqual(config.sage_qk_quant_gran, "per_thread")
                     self.assertEqual(config.sage_pv_dtype, "fp8")
-                    self.assertEqual(config.sage_pv_accum_dtype, "fp32")
+                    self.assertEqual(config.sage_pv_accum_dtype, "fp32+fp32")
                     self.assertTrue(config.sage_smooth_k)
                     self.assertFalse(config.sage_smooth_v)
-                    self.assertTrue(config.sage_image_only)
+                    self.assertEqual(config.sage_image_only, not lite_distilled)
                     self.assertEqual(config.sage_exact_kernel, "fp32")
                     self.assertEqual(config.sage_fa2_first_blocks, 0)
                     self.assertEqual(config.sage_fa2_last_blocks, 0)
@@ -168,9 +169,12 @@ class AdapterPerformanceTests(unittest.TestCase):
             performance.VimooPerformanceOptions().patch(model, "sage", False)
             self.assertFalse(configure.call_args.args[1].precise_math)
             self.assertTrue(configure.call_args.args[1].block_prefetch)
+            self.assertEqual(configure.call_args.args[1].text_padding, "keep")
             model.model_options["vimoo_distilled"] = {"profile": "lite_ti2v_distilled"}
             self.assertIs(performance.reapply_release_performance(model), model)
             self.assertTrue(configure.call_args.args[1].precise_math)
-            self.assertFalse(configure.call_args.args[1].block_prefetch)
+            self.assertTrue(configure.call_args.args[1].block_prefetch)
+            self.assertEqual(configure.call_args.args[1].text_padding, "drop")
+            self.assertFalse(configure.call_args.args[1].sage_image_only)
             self.assertEqual(configure.call_args.args[1].attention, "sage")
             self.assertEqual(configure.call_args.args[1].compile, "disabled")

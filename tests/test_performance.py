@@ -2,6 +2,7 @@
 
 import importlib.util
 from dataclasses import fields
+import math
 import sys
 import types
 import unittest
@@ -47,7 +48,7 @@ class PerformanceTests(unittest.TestCase):
         self.assertEqual(config.sage_scope, "joint")
         self.assertEqual(config.sage_fallback, "pytorch")
         self.assertEqual(config.sage_qk_quant_gran, "per_thread")
-        self.assertEqual(config.sage_pv_accum_dtype, "fp32")
+        self.assertEqual(config.sage_pv_accum_dtype, "fp32+fp32")
         self.assertTrue(config.sage_smooth_k)
         self.assertFalse(config.sage_smooth_v)
 
@@ -79,6 +80,46 @@ class PerformanceTests(unittest.TestCase):
         self.assertEqual(q_shape, (batch, heads, img_len, head_dim))
         self.assertEqual(k_shape, (batch, heads, img_len, head_dim))
         self.assertEqual(v_shape, (batch, heads, img_len, head_dim))
+
+    def test_sage_image_only_skips_padded_text_queries(self):
+        torch.manual_seed(0)
+        batch, heads, head_dim, img_len, txt_len = 1, 2, 32, 10, 6
+        length = img_len + txt_len
+        q, k, v = (torch.randn(batch, length, heads * head_dim, dtype=torch.float16) for _ in range(3))
+        mask = torch.zeros(batch, length, dtype=torch.float16)
+        mask[:, -2:] = torch.finfo(torch.float16).min
+        options = {"vimoo_sage_text_length": txt_len, "vimoo_attention_kind": "joint"}
+        exact = attention_module.exact_partial_attention
+        exact_queries = []
+
+        def kernel(device, **kwargs):
+            return exact(kwargs["q"], kwargs["k"], kwargs["v"], kwargs["sm_scale"], kernel="fp32")
+
+        def observe(q_part, *args, **kwargs):
+            exact_queries.append(q_part.shape[2])
+            return exact(q_part, *args, **kwargs)
+
+        with (
+            patch.object(torch.Tensor, "is_cuda", property(lambda self: True)),
+            patch.object(attention_module, "_call_sage_kernel", side_effect=kernel),
+            patch.object(attention_module, "exact_partial_attention", side_effect=observe),
+        ):
+            out = attention_module.attention_sage2(
+                q, k, v, heads, mask=mask, transformer_options=options, exact_kernel="fp32"
+            )
+        split = (batch, length, heads, head_dim)
+        reference = (
+            torch.nn.functional.scaled_dot_product_attention(
+                *(t.float().view(split).transpose(1, 2) for t in (q, k, v)),
+                attn_mask=mask.float()[:, None, None],
+            )
+            .transpose(1, 2)
+            .reshape(q.shape)
+        )
+        torch.testing.assert_close(out[:, :-2].float(), reference[:, :-2], atol=2e-3, rtol=2e-3)
+        self.assertEqual(torch.count_nonzero(out[:, -2:]), 0)
+        # Image rows against valid text keys, then only the valid text rows.
+        self.assertEqual(exact_queries, [img_len, txt_len - 2])
 
     def test_sage_image_only_drops_padded_text_keys_before_the_split(self):
         """A key mask must not push the joint call back onto the whole-softmax kernel."""
@@ -1224,6 +1265,48 @@ class SageAttentionMath(unittest.TestCase):
         self.k[..., 3] *= 20  # an outlier channel, as in real K
         self.ref = torch.nn.functional.scaled_dot_product_attention(self.q, self.k, self.v)
 
+    def test_long_keys_tile_heads_and_queries_without_changing_attention(self):
+        q = torch.randn(2, 5, 12, 73).transpose(-1, -2)
+        k = torch.randn(2, 5, 12, 513).transpose(-1, -2)
+        v = torch.randn(2, 5, 8, 513).transpose(-1, -2)
+        k[..., 3] *= 20
+        scale = 12**-0.5
+        scores = torch.matmul(q, k.transpose(-1, -2)) * scale
+        reference = torch.matmul(scores.softmax(dim=-1), v)
+        reference_lse = scores.logsumexp(dim=-1)
+        matmul = torch.matmul
+        score_shapes = []
+
+        def observe(left, right):
+            if right.shape[-1] == k.shape[2]:
+                score_shapes.append((*left.shape[:-1], right.shape[-1]))
+            return matmul(left, right)
+
+        workspace = 128 * 1024
+        with patch.object(torch, "matmul", side_effect=observe):
+            out, lse = exact_partial_attention(q, k, v, scale, kernel="fp32", workspace_bytes=workspace)
+        torch.testing.assert_close(out, reference, atol=1e-5, rtol=1e-5)
+        torch.testing.assert_close(lse, reference_lse, atol=1e-5, rtol=1e-5)
+        self.assertGreater(len(score_shapes), 2)
+        self.assertTrue(all(shape[0] == 1 and shape[1] < q.shape[1] for shape in score_shapes))
+        self.assertTrue(all(math.prod(shape) * 4 <= workspace // 4 for shape in score_shapes))
+
+    def test_tiled_exact_attention_preserves_autocast_rounding_and_dtypes(self):
+        q, k, v = (tensor.bfloat16() for tensor in (self.q, self.k, self.v))
+        scale = 16**-0.5
+        with torch.autocast("cpu", dtype=torch.bfloat16):
+            scores = torch.matmul(q.float(), k.float().transpose(-1, -2)) * scale
+            peak = scores.amax(dim=-1, keepdim=True)
+            probs = torch.exp(scores - peak)
+            total = probs.sum(dim=-1, keepdim=True)
+            reference = torch.matmul(probs, v.float()) / total
+            reference_lse = (peak + torch.log(total)).squeeze(-1)
+            out, lse = exact_partial_attention(q, k, v, scale, kernel="fp32", workspace_bytes=16 * 1024)
+        self.assertEqual(out.dtype, reference.dtype)
+        self.assertEqual(lse.dtype, reference_lse.dtype)
+        torch.testing.assert_close(out, reference, atol=0, rtol=0)
+        torch.testing.assert_close(lse, reference_lse, atol=0, rtol=0)
+
     def test_lse_merge_of_key_ranges_matches_full_attention(self):
         scale = 16**-0.5
         out_a, lse_a = exact_partial_attention(
@@ -1265,7 +1348,11 @@ class SageAttentionMath(unittest.TestCase):
             reference = torch.nn.functional.scaled_dot_product_attention(
                 q.float(), k.float(), v.float(), attn_mask=mask, scale=scale
             )
-            torch.testing.assert_close(out.float(), reference, atol=2e-3, rtol=2e-3)
+            # Padded text queries are skipped; their rows never reach the image stream.
+            rows = slice(None) if mask is None else slice(0, 92)
+            torch.testing.assert_close(out[:, :, rows].float(), reference[:, :, rows], atol=2e-3, rtol=2e-3)
+            if mask is not None:
+                self.assertEqual(torch.count_nonzero(out[:, :, 92:]), 0)
             sage.assert_called_once()
             self.assertEqual(sage.call_args.kwargs["k"].shape[2], img_len)
 

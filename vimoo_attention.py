@@ -195,17 +195,16 @@ def _flash_attention_advice():
 # CuTe's wrapper specializes on tensor lengths and autocast; keep the entire
 # exact branch outside the regional graph, not only its inner kernel call.
 @torch.compiler.disable
-def exact_partial_attention(q, k, v, scale, chunk=8192, kernel="fa4"):
+def exact_partial_attention(q, k, v, scale, chunk=8192, kernel="fa4", workspace_bytes=512 * 1024**2):
     """Attention of all queries against one key range, with its log-sum-exp.
 
     Returns the output [B, H, Lq, D] and the natural-log log-sum-exp [B, H, Lq], which is
     what lets two key ranges be merged (SageAttention returns the same quantity).  Torch
     SDPA cannot serve here: it does not return the log-sum-exp.
 
-    ``kernel="fa4"`` is the production path: FlashAttention 4's cute interface, fused and
-    BF16-exact.  ``kernel="fp32"`` computes softmax explicitly in FP32 with PyTorch, kept for
-    tests, for CPU, and for checking the fused kernel; it materialises the score block and
-    is far slower, so it never runs unless it is asked for by name.
+    ``kernel="fa4"`` uses FlashAttention 4's fused interface. ``kernel="fp32"``
+    evaluates the exact text quadrants with PyTorch. Query and head tiles bound
+    temporary key/value casts and score matrices; output storage is additional.
     """
     if kernel == "fa4":
         try:
@@ -223,16 +222,39 @@ def exact_partial_attention(q, k, v, scale, chunk=8192, kernel="fa4"):
         return out.transpose(1, 2), lse
     if kernel != "fp32":
         raise ValueError(f"Unknown exact attention kernel: {kernel!r}")
-    kf, vf = k.float(), v.float()
-    outs, lses = [], []
-    for start in range(0, q.shape[2], chunk):
-        scores = torch.matmul(q[:, :, start : start + chunk].float(), kf.transpose(-1, -2)) * scale
-        peak = scores.amax(dim=-1, keepdim=True)
-        probs = torch.exp(scores - peak)
-        total = probs.sum(dim=-1, keepdim=True)
-        outs.append(torch.matmul(probs, vf) / total)
-        lses.append((peak + torch.log(total)).squeeze(-1))
-    return torch.cat(outs, dim=2), torch.cat(lses, dim=2)
+    if chunk <= 0 or workspace_bytes <= 0:
+        raise ValueError("Attention chunk and workspace must be positive")
+    batch, heads, queries, _ = q.shape
+    keys = k.shape[2]
+    # Half the budget covers FP32 K/V casts. The rest covers overlapping
+    # scores, shifted scores, probabilities and autocast temporaries.
+    # Oversized single heads degrade to one head and one query per tile.
+    cast_bytes_per_head = keys * (k.shape[-1] + v.shape[-1]) * 4
+    head_chunk = min(heads, max(1, workspace_bytes // (2 * cast_bytes_per_head)))
+    output, logsumexp = None, None
+    for batch_index in range(batch):
+        for head_start in range(0, heads, head_chunk):
+            head_end = min(heads, head_start + head_chunk)
+            index = (slice(batch_index, batch_index + 1), slice(head_start, head_end))
+            kf, vf = k[index].float(), v[index].float()
+            remaining = workspace_bytes - (head_end - head_start) * cast_bytes_per_head
+            query_chunk = min(chunk, max(1, remaining // (4 * 4 * (head_end - head_start) * keys)))
+            for start in range(0, queries, query_chunk):
+                query_index = (*index, slice(start, start + query_chunk))
+                scores = torch.matmul(q[query_index].float(), kf.transpose(-1, -2)) * scale
+                peak = scores.amax(dim=-1, keepdim=True)
+                probs = torch.exp(scores - peak)
+                total = probs.sum(dim=-1, keepdim=True)
+                out = torch.matmul(probs, vf) / total
+                lse = (peak + torch.log(total)).squeeze(-1)
+                if output is None:
+                    output = out.new_empty((batch, heads, queries, v.shape[-1]))
+                    logsumexp = lse.new_empty((batch, heads, queries))
+                output[query_index] = out
+                logsumexp[query_index] = lse
+                del scores, peak, probs, total, out, lse
+            del kf, vf
+    return output, logsumexp
 
 
 def merge_lse(out_a, lse_a, out_b, lse_b):
@@ -260,9 +282,10 @@ def image_only_attention(q, k, v, img_len, scale, kernel, exact_kernel="fa4"):
     out_txt, lse_txt = exact_partial_attention(
         q[:, :, :img_len], k[:, :, img_len:], v[:, :, img_len:], scale, kernel=exact_kernel
     )
-    image_rows = merge_lse(out_img, lse_img, out_txt, lse_txt)
-    text_rows = exact_partial_attention(q[:, :, img_len:], k, v, scale, kernel=exact_kernel)[0]
-    return torch.cat((image_rows, text_rows), dim=2).to(q.dtype)
+    image_rows = merge_lse(out_img, lse_img, out_txt, lse_txt).to(q.dtype)
+    del out_img, lse_img, out_txt, lse_txt
+    text_rows = exact_partial_attention(q[:, :, img_len:], k, v, scale, kernel=exact_kernel)[0].to(q.dtype)
+    return torch.cat((image_rows, text_rows), dim=2)
 
 
 _FLASH_HUB = {
@@ -871,17 +894,23 @@ def attention_sage2(
                         )[0].to(q_hnd.dtype)
                     )
                     continue
-                rows.append(
-                    image_only_attention(
-                        q_hnd[index : index + 1],
-                        k_hnd[index : index + 1][:, :, keys],
-                        v_hnd[index : index + 1][:, :, keys],
-                        img_len,
-                        scale,
-                        kernel,
-                        exact_kernel=exact_kernel,
-                    )
+                selected = image_only_attention(
+                    q_hnd[index : index + 1][:, :, keys],
+                    k_hnd[index : index + 1][:, :, keys],
+                    v_hnd[index : index + 1][:, :, keys],
+                    img_len,
+                    scale,
+                    kernel,
+                    exact_kernel=exact_kernel,
                 )
+                if isinstance(keys, slice):
+                    rows.append(selected)
+                    continue
+                # Padded text queries never reach a valid key or the image stream;
+                # skipping them removes most exact text work for short prompts.
+                padded = selected.new_zeros((1, heads, query_length, head_dim))
+                padded[:, :, keys] = selected
+                rows.append(padded)
             split = torch.cat(rows, dim=0)
             if skip_output_reshape:
                 return split

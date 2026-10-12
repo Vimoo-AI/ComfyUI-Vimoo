@@ -279,7 +279,6 @@ def _causal_conv_forward(
     spatial_padding=None,
     im2col_bounded=False,
     im2col_workspace_limit=None,
-    explicit_numerical=False,
 ):
     if cache_list is not None:
         cache_x = cache_list[cache_idx]
@@ -320,13 +319,8 @@ def _causal_conv_forward(
             return torch.ops.aten.slow_conv_dilated3d.default(
                 x, weight, module.kernel_size, bias, module.stride, (0, 0, 0), module.dilation
             )
-        if explicit_numerical:
-            # Native Conv3d's cuDNN workspace workaround adds BF16 bias after
-            # the convolution. Use explicit conv3d dispatch and separate bias
-            # addition while retaining ComfyUI weight staging and hooks.
-            return torch.nn.functional.conv3d(
-                x, weight, bias, module.stride, 0, module.dilation, module.groups
-            )
+        # Native dispatch keeps ComfyUI's cuDNN Conv3d workaround; Torch 2.9's
+        # own BF16 Conv3d dispatch is about 2x slower and uses several times the memory.
         return module._conv_forward(x, weight, bias)
 
 
@@ -477,9 +471,6 @@ class VimooVAE(comfy.sd.VAE):
         self.im2col_workspace_limit = int(im2col_workspace_limit_gib * 1024**3)
         super().__init__(sd=sd, dtype=torch.float32, metadata=metadata)
         self.convolution_backend = convolution_backend
-        self.convolution_numerical_path = (
-            "source_conv3d" if self.numerical_profile == "wan_fp32_norm" else "native_comfy"
-        )
         if self.device.type == "cuda" and self.numerical_profile is None:
             # The legacy norm uses BF16 activations throughout. Source FP32
             # affine/SiLU intermediates keep native FP32 memory estimates so
@@ -553,7 +544,6 @@ class VimooVAE(comfy.sd.VAE):
                     spatial_padding=module.padding[1:],
                     im2col_bounded=convolution_backend == "im2col_bounded",
                     im2col_workspace_limit=self.im2col_workspace_limit,
-                    explicit_numerical=self.numerical_profile == "wan_fp32_norm",
                 )
                 methods[name + ".forward"] = MethodType(forward, module)
                 self.patcher.add_object_patch(name + ".padding", (0, 0, 0))

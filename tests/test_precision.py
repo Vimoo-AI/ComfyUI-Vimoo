@@ -61,7 +61,7 @@ class PrecisionTests(unittest.TestCase):
         self.assertEqual(observed, [True])
         torch.testing.assert_close(actual, expected, rtol=0, atol=0)
 
-    def test_vae_conv_keeps_native_staging_and_separate_bias_operation(self):
+    def test_vae_conv_uses_native_dispatch_with_staged_weights(self):
         from comfy.ldm.wan.vae import CausalConv3d
 
         conv = CausalConv3d(2, 3, 3, padding=1)
@@ -74,11 +74,8 @@ class PrecisionTests(unittest.TestCase):
         padded = torch.nn.functional.pad(x, (1, 1, 1, 1, 2, 0))
         with torch.autocast("cpu", dtype=torch.bfloat16):
             expected = torch.nn.functional.conv3d(padded, conv.weight, conv.bias)
-            after_bias = torch.nn.functional.conv3d(padded, conv.weight, None)
-            after_bias = after_bias + conv.bias.bfloat16().view(1, -1, 1, 1, 1)
-        self.assertFalse(torch.equal(expected, after_bias))
         with (
-            mock.patch.object(conv, "_conv_forward", side_effect=AssertionError("legacy dispatch")),
+            mock.patch.object(conv, "_conv_forward", wraps=conv._conv_forward) as native,
             mock.patch.object(
                 vae_module.comfy.ops,
                 "CastBiasWeightContext",
@@ -86,9 +83,12 @@ class PrecisionTests(unittest.TestCase):
             ) as staging,
             torch.autocast("cpu", dtype=torch.bfloat16),
         ):
-            actual = vae_module._causal_conv_forward(conv, x, spatial_padding=(1, 1), explicit_numerical=True)
+            actual = vae_module._causal_conv_forward(conv, x, spatial_padding=(1, 1))
         staging.assert_called_once()
         self.assertTrue(staging.call_args.kwargs["offloadable"])
+        # ComfyUI's native Conv3d owns the cuDNN workaround on affected versions.
+        native.assert_called_once()
+        self.assertEqual(native.call_args.args[0].dtype, torch.bfloat16)
         torch.testing.assert_close(actual, expected, rtol=0, atol=0)
         self.assertEqual(conv.weight.dtype, torch.float32)
 

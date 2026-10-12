@@ -57,7 +57,6 @@ RELEASE_RECIPES = {
         },
         "performance": {
             "compile": "disabled",
-            "block_prefetch": False,
             "precise_math": True,
         },
     },
@@ -112,7 +111,6 @@ RELEASE_RECIPES = {
         },
         "performance": {
             "compile": "disabled",
-            "block_prefetch": False,
             "precise_math": True,
         },
     },
@@ -172,7 +170,6 @@ RELEASE_RECIPES = {
         },
         "performance": {
             "compile": "disabled",
-            "block_prefetch": False,
             "precise_math": True,
         },
     },
@@ -220,7 +217,6 @@ RELEASE_RECIPES = {
         },
         "performance": {
             "compile": "disabled",
-            "block_prefetch": False,
             "precise_math": True,
         },
     },
@@ -341,8 +337,10 @@ RELEASE_RECIPES = {
         },
         "performance": {
             "compile": "disabled",
-            "block_prefetch": False,
             "precise_math": True,
+            "text_padding": "drop",
+            "fused_qkv": True,
+            "sage_image_only": False,
         },
     },
 }
