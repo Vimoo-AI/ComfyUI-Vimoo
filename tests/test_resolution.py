@@ -101,7 +101,8 @@ class ResolutionTests(unittest.TestCase):
             options = vars(configure.call_args.args[1])
             self.assertEqual(options["compile"], "disabled")
             self.assertTrue(options["precise_math"])
-            self.assertTrue(options["sage_image_only"])
+            self.assertFalse(options["sage_image_only"])
+            self.assertEqual(options["text_padding"], "drop")
             self.assertEqual(options["sage_pv_dtype"], "fp8")
             node.patch(model, "pytorch", True)
             self.assertEqual(configure.call_args.args[1].compile, "regional")
@@ -118,7 +119,10 @@ class ResolutionTests(unittest.TestCase):
             ({"vimoo_distilled": {"profile": "lite_ti2v_distilled"}}, True),
         ]
         for options, precise in profiles:
-            lite_distilled = options.get("vimoo_distilled", {}).get("profile") == "lite_ti2v_distilled"
+            distilled = options.get("vimoo_distilled", {}).get("profile")
+            lite_distilled = distilled == "lite_ti2v_distilled"
+            # Ordinary Lite TI2V keeps the conservative padding and image-only split.
+            joint = options.get("vimoo_sampling_profile") != "lite_ti2v_anchor"
             for attention, compiled in (("sage", False), ("fa2", True)):
                 with self.subTest(options=options, attention=attention, compile=compiled):
                     config = performance.release_performance_config(
@@ -131,7 +135,7 @@ class ResolutionTests(unittest.TestCase):
                     self.assertEqual(config.precise_math, precise)
                     self.assertTrue(config.block_prefetch)
                     self.assertEqual(config.memory_usage_factor, 4.0)
-                    self.assertEqual(config.text_padding, "drop" if lite_distilled else "keep")
+                    self.assertEqual(config.text_padding, "drop" if joint else "keep")
                     self.assertEqual(config.fused_qkv, lite_distilled)
                     self.assertEqual(config.sage_scope, "joint")
                     self.assertEqual(config.sage_fallback, "pytorch")
@@ -140,7 +144,7 @@ class ResolutionTests(unittest.TestCase):
                     self.assertEqual(config.sage_pv_accum_dtype, "fp32+fp32")
                     self.assertTrue(config.sage_smooth_k)
                     self.assertFalse(config.sage_smooth_v)
-                    self.assertEqual(config.sage_image_only, not lite_distilled)
+                    self.assertEqual(config.sage_image_only, not joint)
                     self.assertEqual(config.sage_exact_kernel, "fp32")
                     self.assertEqual(config.sage_fa2_first_blocks, 0)
                     self.assertEqual(config.sage_fa2_last_blocks, 0)

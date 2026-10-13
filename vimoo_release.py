@@ -58,6 +58,8 @@ RELEASE_RECIPES = {
         "performance": {
             "compile": "disabled",
             "precise_math": True,
+            "text_padding": "drop",
+            "sage_image_only": False,
         },
     },
     "i2v_distilled": {
@@ -112,6 +114,8 @@ RELEASE_RECIPES = {
         "performance": {
             "compile": "disabled",
             "precise_math": True,
+            "text_padding": "drop",
+            "sage_image_only": False,
         },
     },
     "t2v": {
@@ -171,6 +175,8 @@ RELEASE_RECIPES = {
         "performance": {
             "compile": "disabled",
             "precise_math": True,
+            "text_padding": "drop",
+            "sage_image_only": False,
         },
     },
     "t2v_distilled": {
@@ -218,6 +224,8 @@ RELEASE_RECIPES = {
         "performance": {
             "compile": "disabled",
             "precise_math": True,
+            "text_padding": "drop",
+            "sage_image_only": False,
         },
     },
     "ti2v_lite": {
