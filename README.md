@@ -62,11 +62,22 @@ Run these commands from the ComfyUI root directory. Install the Hugging Face CLI
 ```bash
 hf download Vimoo-AI/Vimoo-1.0-ComfyUI \
   text_encoders/vimoo_v1_qwen2_5_vl_7b_bf16.safetensors \
-  text_encoders/vimoo_v1_glyph_byt5_fp32.safetensors \
   clip_vision/vimoo_v1_siglip_so400m_fp16.safetensors \
   vae/vimoo_v1_wan22_ti2v_vae_fp32.safetensors \
   --local-dir models
 ```
+
+#### ByT5 encoder
+
+Vimoo uses [Glyph-SDXL-v2](https://huggingface.co/nlpcvcode/Glyph-SDXL-v2) as its ByT5 encoder. Download the encoder and the base ByT5 configuration and tokenizer, then convert the files for inference:
+
+```bash
+hf download nlpcvcode/Glyph-SDXL-v2 --revision a5aac7f492e85819208e7ed14aa4402d9c0b1b65 --include "checkpoints/byt5_model.pt" "assets/color_idx.json" "assets/multilingual_10-lang_idx.json" --local-dir ./glyph-source/Glyph-SDXL-v2
+hf download google/byt5-small --revision 68377bdc18a2ffec8a0533fef03b1c513a4dd49d --include "config.json" "tokenizer_config.json" "special_tokens_map.json" --local-dir ./glyph-source/byt5-small
+python3 custom_nodes/ComfyUI-Vimoo/tools/convert_byt5.py --source-dir ./glyph-source/Glyph-SDXL-v2 --base-dir ./glyph-source/byt5-small --output ./models --format comfyui
+```
+
+
 
 Then download the files for your model from its repository in the same way:
 

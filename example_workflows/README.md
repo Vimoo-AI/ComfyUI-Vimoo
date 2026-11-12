@@ -15,7 +15,7 @@ Choose the workflow that matches your installed model and task. Each JSON includ
 
 ## Install weights
 
-Copy the selected checkpoint, its supporting encoders and VAE, and any matching adapter into `ComfyUI/models/`, preserving the package's directory structure and adjacent JSON files.
+Follow [Download weights](../README.md#download-weights) to download the selected checkpoint, prepare the Glyph encoder, and place the supporting encoders, VAE and any matching adapter in `ComfyUI/models/`.
 
 | Distilled model | Adapter in `ComfyUI/models/loras/` |
 |---|---|

@@ -610,10 +610,15 @@ class VimooTextEncoderLoader:
             "lite_compact",
         ):
             raise ValueError("Unknown Vimoo text precision profile")
-        paths = [
-            folder_paths.get_full_path_or_raise("text_encoders", qwen_name),
-            folder_paths.get_full_path_or_raise("text_encoders", byt5_name),
-        ]
+        qwen_path = folder_paths.get_full_path_or_raise("text_encoders", qwen_name)
+        try:
+            byt5_path = folder_paths.get_full_path_or_raise("text_encoders", byt5_name)
+        except FileNotFoundError as error:
+            raise FileNotFoundError(
+                "Convert the ByT5 encoder into ComfyUI models/text_encoders. "
+                "See README Download weights and run convert_byt5.py with --format comfyui."
+            ) from error
+        paths = [qwen_path, byt5_path]
         state_dicts = []
         parameters = 0
         required_keys = [
@@ -624,7 +629,10 @@ class VimooTextEncoderLoader:
             state_dict, metadata = comfy.utils.load_torch_file(path, safe_load=True, return_metadata=True)
             state_dict, _ = comfy.utils.convert_old_quants(state_dict, model_prefix="", metadata=metadata)
             if required_key not in state_dict:
-                raise ValueError(f"Wrong Vimoo text encoder checkpoint {path!r}; missing {required_key!r}.")
+                raise ValueError(
+                    f"Wrong Vimoo text encoder checkpoint {path!r}; missing {required_key!r}. "
+                    "For Glyph, use convert_byt5.py with --format comfyui."
+                )
             parameters += comfy.utils.calculate_parameters(state_dict)
             state_dicts.append(state_dict)
 
